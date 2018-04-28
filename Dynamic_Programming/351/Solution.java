@@ -80,3 +80,42 @@ class Solution {
         v[index] = false;
     }
 }
+
+
+class Solution {
+    public int numberOfPatterns(int m, int n) {
+        boolean[] used = new boolean[10];
+        used[0] = true;
+        int[][] skip = new int[10][10];
+        skip[1][3] = skip[3][1] = 2;
+        skip[1][7] = skip[7][1] = 4;
+        skip[7][9] = skip[9][7] = 8;
+        skip[9][3] = skip[3][9] = 6;
+        skip[4][6] = skip[6][4] = 5;
+        skip[2][8] = skip[8][2] = 5;
+        skip[1][9] = skip[9][1] = 5;
+        skip[3][7] = skip[7][3] = 5;
+        int res1 = 0, res2 = 0, res3 = 0;
+        res1 = helper(1, 1, m, n, used, skip);
+        res2 = helper(2, 1, m, n, used, skip);
+        res3 = helper(5, 1, m, n, used, skip);        
+        return res1 * 4 + res2 * 4 + res3;
+    }
+    
+    public int helper(int last, int len, int m, int n, boolean[] used, int[][] skip) {
+        if (used[last])
+            return 0;
+        int res = 0;
+        if (len >= m && len <= n)
+            res++;
+        if (len == n)
+            return res;
+        used[last] = true;
+        for (int i = 1; i < 10; i++) {
+            if (!used[i] && used[skip[last][i]]) 
+                res += helper(i, len+1, m, n, used, skip);
+        }
+        used[last] = false;
+        return res;
+    }
+}
