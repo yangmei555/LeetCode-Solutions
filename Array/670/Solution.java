@@ -26,3 +26,49 @@ class Solution {
         return res;
     }
 }
+
+
+class Solution {
+    public int maximumSwap(int num) {
+        char[] ch = Integer.toString(num).toCharArray();
+        for (int i = 0; i < ch.length-1; i++) {
+            if (ch[i] < ch[i+1]) {
+                int max = i+1;
+                for (int j = i+1; j < ch.length; j++) 
+                    if (ch[j] >= ch[max])
+                        max = j;
+                int k = i;
+                while (k >= 0 && ch[max] > ch[k])
+                    k--;
+                k++;
+                char temp = ch[max];
+                ch[max] = ch[k];
+                ch[k] = temp;
+                return Integer.valueOf(new String(ch));
+            }
+        }
+        return num;
+    }
+}
+
+
+class Solution {
+    public int maximumSwap(int num) {
+        char[] ch = Integer.toString(num).toCharArray();
+        int[] digits = new int[10];
+        for (int i = 0; i < ch.length; i++) {
+            digits[ch[i]-'0'] = i;
+        }
+        for (int i = 0; i < ch.length; i++) {
+            for (int j = 9; j > ch[i]-'0'; j--) {
+                if (digits[j] > i) {
+                    char temp = ch[i];
+                    ch[i] = ch[digits[j]];
+                    ch[digits[j]] = temp;
+                    return Integer.valueOf(new String(ch));
+                }
+            }
+        }
+        return num;
+    }
+}
