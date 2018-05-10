@@ -52,7 +52,7 @@ class Solution {
         dividend = dividend > 0 ? dividend : -dividend;
         while (dividend >= divisor) {
             int base = 1, sub = divisor;
-            while (dividend / 2 >= sub) {
+            while ((dividend >> 1) >= sub) {
                 sub <<= 1;
                 base <<= 1;
             }
