@@ -34,3 +34,47 @@ class Solution {
         return (int)b;
     }
 }
+
+
+class Solution {
+    public int arrangeCoins(int n) {
+        long left = 1, right = n;
+        while (left < right) {
+            long mid = (left + right) / 2;
+            if ((1+mid)*mid/2 == n)
+                return (int)mid;
+            else if ((1+mid)*mid/2 > n)
+                right = mid;
+            else 
+                left = mid + 1;
+        }
+        if ((1+left)*left/2 <= n)
+            return (int)left;
+        else
+            return (int)left-1;
+    }
+}
+
+
+class Solution {
+    public int arrangeCoins(int n) {
+        if (n == 0 || n == 1)
+            return n;
+        int i = 1;
+        while (n >= 0) {
+            n -= i;
+            i++;
+        }
+        return i-2;
+    }
+}
+
+
+class Solution {
+    public int arrangeCoins(int n) {
+        if (n == 0 || n == 1)
+            return n;
+        long t = (long)n;
+        return (int)((Math.sqrt(1+8*t)-1)/2);
+    }
+}
