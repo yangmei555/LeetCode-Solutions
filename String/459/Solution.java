@@ -54,3 +54,91 @@ class Solution {
         return false;
     }
 }
+
+
+class Solution {            // KMP algorithm
+    public boolean repeatedSubstringPattern(String s) {
+        int index = s.length() / 2;
+        int len = s.length();
+        char[] ch = s.toCharArray();
+        int[] pi = getPrefix(ch);
+        for (; index > 0; index--) {
+            if (len % index != 0)
+                continue;
+            if (match(ch, pi, index) == len / index) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public int match(char[] s, int[] pi, int bound) {
+        int res = 0;
+        int q = 0;
+        for (int i = 0; i < s.length; i++) {
+            while (q != 0 && s[q] != s[i])
+                q = pi[q-1];
+            if (s[q] == s[i])
+                q++;
+            if (q == bound) {
+                res++;
+                q = 0;
+            }
+        }
+        return res;
+    }
+    
+    public int[] getPrefix(char[] s) {
+        int[] pi = new int[s.length];
+        int k = 0;
+        pi[0] = 0;
+        for (int i = 1; i < s.length; i++) {
+            while (k > 0 && s[k] != s[i])
+                k = pi[k-1];
+            if (s[k] == s[i])
+                k++;
+            pi[i] = k;
+        }
+        return pi;
+    }
+}
+
+
+class Solution {               // Rabin Karp algorithm
+    public boolean repeatedSubstringPattern(String s) {
+        int index = s.length() / 2;
+        int len = s.length();
+        char[] ch = s.toCharArray();
+        for (; index > 0; index--) {
+            if (len % index != 0)
+                continue;
+            if (rabin_karp(ch, index) == len / index) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public int rabin_karp(char[] s, int bound) {
+        int mod = 97, d = 26, p = 0, t = 0, h = 1, res = 1;
+        for (int i = 0; i < bound; i++) {
+            if (i != 0)
+                h = (h * d) % mod;
+            p = (p * d + s[i] - 'a') % mod;
+            t = (t * d + s[i + bound] - 'a') % mod;
+        }
+        for (int i = bound; i <= s.length - bound; i++) {
+            if (p == t && i % bound == 0) {
+                int j = 0;
+                for (; j < bound; j++)
+                    if (s[j] != s[i + j])
+                        break;
+                if (j == bound)
+                    res++;
+            }
+            if (i != s.length - bound)
+                t = (((t-(s[i]-'a')*h)*d+(s[i+bound]-'a'))%mod+mod)%mod;
+        }
+        return res;
+    }
+}
