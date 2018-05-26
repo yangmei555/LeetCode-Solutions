@@ -44,3 +44,63 @@ class Solution {
         return res[n-1];
     }
 }
+
+
+class Solution {
+    public int nthSuperUglyNumber(int n, int[] primes) {
+        PriorityQueue<Integer> queue = new PriorityQueue<>();
+        queue.offer(1);
+        int ans = 0, pre = 0;
+        for (int i = 0; i < n; i++) {
+            ans = queue.poll();
+            if (ans == pre) {
+                i--;
+                continue;
+            } else {
+                for (int j = 0; j < primes.length; j++) {
+                    if (ans < Integer.MAX_VALUE / primes[j])
+                        queue.offer(ans * primes[j]);
+                }
+                pre = ans;
+            }
+        }
+        return ans;
+    }
+}
+
+
+class Solution {
+    public int nthSuperUglyNumber(int n, int[] primes) {
+        int[] res = new int[n];
+        PriorityQueue<P> queue = new PriorityQueue<>(new Comparator<P>() {
+            public int compare(P p1, P p2) {
+                return p1.value - p2.value;
+            }
+        });
+        for (int i = 0; i < primes.length; i++) 
+            queue.offer(new P(primes[i], 1, primes[i]));
+        res[0] = 1;
+        for (int i = 1; i < n; i++) {
+            P top = queue.peek();
+            res[i] = top.value;
+            while (res[i] == queue.peek().value) {
+                P poll = queue.poll();
+                poll.value = res[poll.index] * poll.prime;
+                poll.index++;
+                queue.add(poll);
+            }
+        }
+        return res[n-1];
+    }
+    
+    class P {
+        int prime;
+        int index;
+        int value;
+        public P(int p, int i, int v) {
+            prime = p;
+            index = i;
+            value = v;
+        }
+    }
+}
