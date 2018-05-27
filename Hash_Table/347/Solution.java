@@ -33,7 +33,8 @@ class Solution {
         Map<Integer, Integer> map = new HashMap<>();
         for (int n : nums)
             map.put(n, map.getOrDefault(n, 0) + 1);
-        PriorityQueue<Map.Entry<Integer, Integer>> queue = new PriorityQueue<>(new Comparator<Map.Entry<Integer, Integer>>() {
+        PriorityQueue<Map.Entry<Integer, Integer>> queue = new PriorityQueue<>(
+            new Comparator<Map.Entry<Integer, Integer>>() {
             public int compare(Map.Entry<Integer, Integer> e1, Map.Entry<Integer, Integer> e2) {
                 return e1.getValue() - e2.getValue();
             }
