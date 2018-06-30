@@ -59,3 +59,28 @@ class Solution {
         return true;
     }
 }
+
+
+class Solution {
+    public boolean isOneEditDistance(String s, String t) {
+        char[] ch1 = s.toCharArray(), ch2 = t.toCharArray();
+        if (!(ch1.length == ch2.length && !s.equals(t) || ch1.length-ch2.length==1 || 
+                                                            ch2.length-ch1.length == 1))
+            return false;
+        boolean flag = false;
+        for (int i = 0, j = 0; i < ch1.length && j < ch2.length; i++, j++) {
+            if (ch1[i] != ch2[j]) {
+                if (flag) {
+                    return false;
+                } else {
+                    flag = true;
+                    if (ch1.length > ch2.length)
+                        j--;
+                    else if (ch1.length < ch2.length)
+                        i--;
+                }
+            }
+        }
+        return true;
+    }
+}
