@@ -13,3 +13,15 @@ class Solution {
         return res;
     }
 }
+
+
+class Solution {
+    public int maxProfit(int[] prices) {
+        int buy = Integer.MIN_VALUE, sell = 0;
+        for (int p : prices) {
+            sell = sell > buy + p ? sell : buy + p;
+            buy = buy > -p ? buy : -p;
+        }
+        return sell;
+    }
+}
