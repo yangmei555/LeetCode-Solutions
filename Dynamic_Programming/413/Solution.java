@@ -45,3 +45,22 @@ class Solution {
         return res;
     }
 }
+
+
+class Solution {
+    public int numberOfArithmeticSlices(int[] A) {
+        if (A.length < 3)
+            return 0;
+        int res = 0, diff = A[1] - A[0], count = 1;
+        for (int i = 2; i < A.length; i++) {
+            if (diff == A[i] - A[i-1]) {
+                res += count;
+                count++;
+            } else {
+                diff = A[i] - A[i-1];
+                count = 1;
+            }
+        }
+        return res;
+    }
+}
