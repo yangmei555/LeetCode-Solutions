@@ -35,6 +35,13 @@ class Solution {
 
 class Solution {
     public boolean repeatedSubstringPattern(String s) {
+        return (s+s).substring(1, s.length()*2-1).contains(s);
+    }
+}
+
+
+class Solution {
+    public boolean repeatedSubstringPattern(String s) {
         if (s == null || s.length() == 0)
             return false;
         int len = s.length(), times = 0;
@@ -100,6 +107,24 @@ class Solution {            // KMP algorithm
             pi[i] = k;
         }
         return pi;
+    }
+}
+
+
+class Solution {            // the correct way to use KMP!!!!!!!!!!
+    public boolean repeatedSubstringPattern(String s) {
+        char[] ch = s.toCharArray();
+        int[] pi = new int[ch.length];
+        pi[0] = 0;
+        int matched = 0;
+        for (int i = 1; i < pi.length; i++) {
+            while (matched > 0 && ch[matched] != ch[i])
+                matched = pi[matched-1];
+            if (ch[matched] == ch[i])
+                matched++;
+            pi[i] = matched;
+        }
+        return pi[pi.length-1] != 0 && pi.length % (pi.length - pi[pi.length-1]) == 0;
     }
 }
 
