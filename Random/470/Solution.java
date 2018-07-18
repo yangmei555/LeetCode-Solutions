@@ -6,7 +6,7 @@
 class Solution extends SolBase {
     public int rand10() {
         int a = 2, b = 2;
-        while ( 7 * a + b > 9) {
+        while (7 * a + b > 9) {
             a = rand7() - 1;
             b = rand7() - 1;
         }
@@ -23,7 +23,7 @@ class Solution extends SolBase {
 class Solution extends SolBase {
     public int rand10() {
         int a = 6, b = 6;
-        while ( 7 * a + b >= 40) {
+        while (7 * a + b >= 40) {
             a = rand7() - 1;
             b = rand7() - 1;
         }
