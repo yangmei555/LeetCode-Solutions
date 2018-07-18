@@ -74,8 +74,8 @@ class Solution {
                                      {0, 0, 1, 0, 0, 1}, 
                                      {0, 0, 1, 1, 0, 1}, 
                                      {0, 0, 1, 0, 1, 1}};
-        return (int)pow(coef, n+1)[5][2];
-    }
+        return (int)pow(coef, n+1)[5][2];   // what we want to get is the power of the 
+    }                                       // coefficient matirx
     
     public long[][] pow(long[][] m, int n) {
         if (n == 1)
