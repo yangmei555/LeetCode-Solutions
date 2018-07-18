@@ -59,6 +59,7 @@ class Solution {
             return 0;
         int mod = 1000000007;
         int[] dp = new int[k+1], pre = new int[k+1];
+        dp[0] = 1;
         for (int i = 1; i <= n; i++) {
             System.arraycopy(dp, 0, pre, 0, dp.length);
             for (int j = 0; j <= k && j <= i * (i-1) / 2; j++) {
