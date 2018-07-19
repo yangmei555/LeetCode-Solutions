@@ -69,6 +69,7 @@ class Solution {
             for (int j = 1; j <= k; j++) {
                 dp[i][j] = dp[i-1][j] > prices[i] + record[j-1] ? 
                             dp[i-1][j] : prices[i] + record[j-1];
+                // it is the same as using dp[i-1][j] - prices[i-1] ... don't know why
                 record[j] = record[j] > dp[i][j] - prices[i] ? record[j] : dp[i][j] - prices[i];
             }
         }
