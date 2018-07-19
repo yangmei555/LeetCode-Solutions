@@ -23,7 +23,8 @@ class Solution {
                 sb.insert(i + offset, "<b>");
                 offset += 3;
             }
-            if ((i != info.length - 1 && info[i] == 1 && info[i+1] == 0) || (i == info.length - 1 && info[i] == 1)) {
+            if ((i != info.length - 1 && info[i] == 1 && info[i+1] == 0) || 
+                (i == info.length - 1 && info[i] == 1)) {
                 sb.insert(i + 1 + offset, "</b>");
                 offset += 4;
             }
