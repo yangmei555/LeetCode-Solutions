@@ -16,3 +16,26 @@ public class Solution {
         return len + 1;
     }
 }
+
+
+class Solution {
+    public int firstMissingPositive(int[] nums) {
+        if (nums == null || nums.length == 0)
+            return 1;
+        int temp = 0;
+        for (int i = 0; i < nums.length; i++) {
+            while (nums[i] >= 1 && nums[i] <= nums.length && nums[i] != nums[nums[i]-1]) {
+                temp = nums[i];
+                nums[i] = nums[nums[i]-1];
+                nums[temp-1] = temp;
+            }
+        }
+        int res = 0, i = 0;
+        for (; i < nums.length; i++) {
+            res = i+1;
+            if (nums[i] != res)
+                break;
+        }
+        return i == nums.length ? i + 1 : res;
+    }
+}

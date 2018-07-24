@@ -28,3 +28,30 @@ public class Solution {
         return closetSum;
     }
 }
+
+
+class Solution {
+    public int threeSumClosest(int[] nums, int target) {
+        Arrays.sort(nums);
+        int res = Integer.MAX_VALUE;
+        for (int i = 0; i+2 < nums.length; i++) {
+            if (i != 0 && nums[i-1] == nums[i])
+                continue;
+            int x = nums[i] - target, left = i+1, right = nums.length-1;
+            while (left < right) {
+                if (nums[left] + nums[right] == -x) {
+                    return target;
+                } else if (nums[left] + nums[right] < -x) {
+                    if (Math.abs(nums[left] + nums[right] + x) < Math.abs(res))
+                        res = nums[left] + nums[right] + x;
+                    left++;
+                } else {
+                    if (Math.abs(nums[left] + nums[right] + x) < Math.abs(res))
+                        res = nums[left] + nums[right] + x;
+                    right--;
+                }
+            }
+        }
+        return target + res;
+    }
+}
