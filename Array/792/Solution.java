@@ -30,28 +30,27 @@ class Solution {
 
 class Solution {
     public int numMatchingSubseq(String S, String[] words) {
-        Map<Character, List<Integer>> map = new HashMap<>();
+        List<Integer>[] map = new List[26];
         char[] s = S.toCharArray();
         for (int i = 0; i < s.length; i++) {
-            map.putIfAbsent(s[i], new ArrayList<>());
-            map.get(s[i]).add(i);
+            if (map[s[i]-'a'] == null)
+                map[s[i]-'a'] = new ArrayList<>();
+            map[s[i]-'a'].add(i);
         }
         int res = 0, temp = 0;
         for (String w : words) {
             char[] ch = w.toCharArray();
             int index = 0, i = 0;
             for (; i < ch.length; i++) {
-                if (!map.containsKey(ch[i]))
+                if (map[ch[i]-'a'] == null)
                     break;
-                List<Integer> list = map.get(ch[i]);
-                temp = index;
-                for (int l : list)
-                    if (l >= index) {
-                        index = l + 1;
-                        break;
-                    }
-                if (temp == index)
+                List<Integer> list = map[ch[i]-'a'];
+                int pos = Collections.binarySearch(list, index);
+                pos = pos >= 0 ? pos : - pos - 1;
+                if (pos == list.size())
                     break;
+                else
+                    index = list.get(pos) + 1;
             }
             if (i == ch.length)
                 res++;
@@ -65,7 +64,7 @@ class Solution {
     public int numMatchingSubseq(String S, String[] words) {
         List<Wrapper>[] list = new List[26];
         for (int i = 0; i < list.length; i++)
-            list[i] = new ArrayList<>();
+            list[i] = new LinkedList<>();
         for (String w : words) {
             list[w.charAt(0)-'a'].add(new Wrapper(w, 0));
         }
@@ -92,6 +91,44 @@ class Solution {
         int index;
         public Wrapper(String s, int index) {
             this.ch = s.toCharArray();
+            this.index = index;
+        }
+    }
+}
+
+
+class Solution {
+    public int numMatchingSubseq(String S, String[] words) {
+        List<Node>[] map = new List[26];
+        for (int i = 0; i < words.length; i++) {
+            if (map[words[i].charAt(0)-'a'] == null)
+                map[words[i].charAt(0)-'a'] = new ArrayList<>();
+            map[words[i].charAt(0)-'a'].add(new Node(i, 0));
+        }
+        int res = 0;
+        for (int i = 0; i < S.length(); i++) {
+            if (map[S.charAt(i)-'a'] == null)
+                continue;
+            List<Node> list = new ArrayList<>(map[S.charAt(i)-'a']);
+            map[S.charAt(i)-'a'] = null;
+            for (Node n : list) {
+                n.index++;
+                if (n.index == words[n.i].length())
+                    res++;
+                else {
+                    if (map[words[n.i].charAt(n.index)-'a'] == null)
+                        map[words[n.i].charAt(n.index)-'a'] = new ArrayList<>();
+                    map[words[n.i].charAt(n.index)-'a'].add(n);
+                }
+            }
+        }
+        return res;
+    }
+    
+    class Node {
+        int i, index;
+        public Node(int i, int index) {
+            this.i = i;
             this.index = index;
         }
     }

@@ -26,18 +26,16 @@ class Solution {
 
 class Solution {
     public int wiggleMaxLength(int[] nums) {
-        if (nums.length < 2)
+        if (nums.length == 0 || nums.length == 1)
             return nums.length;
-        int len = nums.length;
-        int pos = 1, neg = 1;
-        for (int i = 1; i < nums.length; i++) {
-            if (nums[i] > nums[i-1]) {
-                pos = neg + 1;
-            } else if (nums[i] < nums[i-1]) {
-                neg = pos + 1;
-            } 
+        int up = nums[0] < nums[1] ? 2 : 1, down = nums[0] > nums[1] ? 2 : 1;
+        for (int i = 2; i < nums.length; i++) {
+            if (nums[i-1] < nums[i]) 
+                up = down + 1;
+            else if (nums[i-1] > nums[i]) 
+                down = up + 1;
         }
-        return pos > neg ? pos : neg;
+        return up > down ? up : down;
     }
 }
 
