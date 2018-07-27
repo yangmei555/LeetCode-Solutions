@@ -15,3 +15,80 @@ class Solution {
         return res;
     }
 }
+
+
+public class Solution {
+    public int leastInterval(char[] tasks, int n) {
+        int[] map = new int[26];
+        for (char c : tasks)
+            map[c-'A']++;
+        Arrays.sort(map);
+        int i = 25;
+        while (i >= 0 && map[i] == map[25])
+            i--;
+        int res1 = tasks.length;
+        int res2 = (map[25]-1) * (n+1) + 25 - i;
+        return res1 > res2 ? res1 : res2;
+    }
+}
+
+
+public class Solution {
+    public int leastInterval(char[] tasks, int n) {
+        int[] map = new int[26];
+        int max = 0, count = 0;
+        for (char c : tasks) 
+            map[c-'A']++;
+        PriorityQueue<Integer> queue = new PriorityQueue<>(new Comparator<Integer>() {
+            public int compare(Integer i1, Integer i2) {
+                return i2 - i1;
+            }
+        });
+        for (int m : map) {
+            if (m != 0)
+                queue.offer(m);
+        }
+        int res = 0;
+        while (!queue.isEmpty()) {
+            int slot = n + 1;
+            List<Integer> temp = new LinkedList<>();
+            while (!queue.isEmpty() && slot > 0) {
+                temp.add(queue.poll() - 1);
+                slot--;
+                res++;
+            }
+            for (int t : temp) {
+                if (t != 0)
+                    queue.offer(t);
+            }
+            if (queue.isEmpty())
+                break;
+            else if (slot != 0)
+                res += slot;
+        }
+        return res;
+    }
+}
+
+
+class Solution {
+    public int leastInterval(char[] tasks, int n) {
+        int[] map = new int[26];
+        int max = 0, count = 0;
+        for (char c : tasks) {
+            map[c-'A']++;
+            if (map[c-'A'] > max) {
+                max = map[c-'A'];
+                count = 1;
+            } else if (map[c-'A'] == max) {
+                count++;
+            }
+        }
+        int tasksNeedSchedule = tasks.length - max * count;
+        int availableSlots = (max - 1) * (n + 1 - count);
+        int idleSlots = availableSlots - tasksNeedSchedule > 0 ? 
+                        availableSlots - tasksNeedSchedule : 0;
+        return tasks.length + idleSlots;
+        
+    }
+}
