@@ -184,3 +184,37 @@ class Solution {
         return dp[i][j];
     }
 }
+
+
+class Solution {
+    public int countPalindromicSubsequences(String S) {
+        int mod = 1000000007;
+        char[] ch = S.toCharArray();
+        // dp[i]: all different palindrom subsequences which start with ch[i] 
+        int[] dp = new int[ch.length]; 
+        for (int i = 0; i < dp.length; i++) {
+            dp[i] = 1;
+            int[] total = new int[4];
+            for (int j = i-1; j >= 0; j--) {
+                int temp = dp[j];
+                if (ch[j] == ch[i]) {
+                    // update dp[j] if ch[j] == ch[i]
+                    // dp[j] is just all different palindrom subsequences 
+                    // that start with 'a' 'b' 'c' 'd' plus 2 
+                    dp[j] = 0;
+                    for (int t = 0; t < total.length; t++)
+                        dp[j] = (dp[j] + total[t]) % mod;
+                    dp[j] = (dp[j] + 2) % mod;
+                }
+                total[ch[j]-'a'] = temp;
+            }
+        }
+        int[] total = new int[4];
+        for (int i = ch.length-1; i >= 0; i--)
+            total[ch[i]-'a'] = dp[i];
+        int res = 0;
+        for (int t = 0; t < total.length; t++)
+            res = (res + total[t]) % mod;
+        return res;
+    }
+}
