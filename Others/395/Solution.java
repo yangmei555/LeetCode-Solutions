@@ -43,6 +43,8 @@ class Solution {
             if (m >= k)
                 count++;
         }
+        // in each loop, find out longest substring which contains "nums" unique characters 
+        // and each character appears at least k times
         for (int nums = 1; nums <= count; nums++) {
             int unique = 0, atLeastK = 0, left = 0, right = 0;
             int[] record = new int[26];
