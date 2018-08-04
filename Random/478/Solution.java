@@ -8,6 +8,8 @@ class Solution {
     
     public double[] randPoint() {
         double rad = Math.random() * Math.PI * 2;
+        // r^2 is uniformly distributed over [0, 1], since pi*r^2 is uniformly distributed 
+        // over [0, pi] 
         double len = Math.sqrt(Math.random()) * r;
         return new double[]{xc + len * Math.cos(rad), yc + len * Math.sin(rad)};
     }
