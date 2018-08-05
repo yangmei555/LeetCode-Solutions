@@ -126,3 +126,49 @@ class Solution {
         return res;
     }
 }
+
+
+class Solution {
+    public int robotSim(int[] commands, int[][] obstacles) {
+        int[][] dirs = new int[][]{{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+        Set<Point> set = new HashSet<>();
+        for (int[] o : obstacles)
+            set.add(new Point(o[0], o[1]));
+        int res = 0, x = 0, y = 0, dir = 0;
+        for (int c : commands) {
+            if (c == -1) {
+                dir = (dir + 1) % 4;
+            } else if (c == -2) {
+                dir = (dir + 3) % 4;
+            } else {
+                while (c-- > 0) {
+                    if (!set.contains(new Point(x + dirs[dir][0], y + dirs[dir][1]))) {
+                        x = x + dirs[dir][0];
+                        y = y + dirs[dir][1];
+                    } else {
+                        break;
+                    }
+                }
+                res = Math.max(res, x * x + y * y);
+            }
+        }
+        return res;
+    }
+    
+    class Point {
+        int x, y;
+        public Point(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+        public int hashCode() {
+            return x * 31 + y;
+        }
+        public boolean equals(Object obj) {
+            if (obj instanceof Point) 
+                return ((Point)obj).x == x && ((Point)obj).y == y;
+            else 
+                return false;
+        }
+    }
+}
