@@ -46,3 +46,30 @@ class Solution {
         return res;
     }
 }
+
+
+class Solution {
+    public String[] findRelativeRanks(int[] nums) {
+        int min = Integer.MAX_VALUE, max = Integer.MIN_VALUE;
+        for (int n : nums) {
+            min = min < n ? min : n;
+            max = max > n ? max : n;
+        }
+        int[] map = new int[max-min+1];
+        for (int i = 0; i < nums.length; i++)
+            map[nums[i]-min] = i+1;
+        String[] medals = new String[]{"Gold Medal", "Silver Medal", "Bronze Medal"};
+        String[] res = new String[nums.length];
+        int rank = 1;
+        for (int i = map.length-1; i >= 0; i--) {
+            if (map[i] > 0) {
+                if (rank < 4)
+                    res[map[i]-1] = medals[rank-1];
+                else
+                    res[map[i]-1] = rank + "";
+                rank++;
+            }
+        }
+        return res;
+    }
+}

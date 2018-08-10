@@ -41,7 +41,7 @@ class Solution {
         for (int i = 1; i < people.length; i++) {
             Node parent = dummy, node = dummy.right;
             int rank = people[i][1] + 1;
-            System.out.println(people[i][0] + " " + people[i][1]);
+            // System.out.println(people[i][0] + " " + people[i][1]);
             if (rank == node.size + 1) {
                 while (node.right.elem != null) {
                     node.size++;
