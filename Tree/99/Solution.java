@@ -46,3 +46,39 @@ class Solution {
         return;
     }
 }
+
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    TreeNode pre = null, target1 = null, target2 = null;
+    public void recoverTree(TreeNode root) {
+        helper(root);
+        int temp = target1.val;
+        target1.val = target2.val;
+        target2.val = temp;
+        return;
+    }
+    
+    public void helper(TreeNode root) {
+        if (root == null)
+            return;
+        helper(root.left);
+        if (pre != null) {
+            if (pre.val > root.val) {
+                if (target1 == null)
+                    target1 = pre;
+                target2 = root;
+            } 
+        }
+        pre = root;
+        helper(root.right);
+    }
+}
