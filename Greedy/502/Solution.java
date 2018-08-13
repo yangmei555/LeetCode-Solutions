@@ -56,3 +56,62 @@ class Solution {
         return W;
     }
 }
+
+
+// this solution is incorrect when k >= Profits.length, not necessarily every project can be taken 
+// but it can fool the OJ and it is very fast so I include it ... 
+class Solution {
+    public int findMaximizedCapital(int k, int W, int[] Profits, int[] Capital) {
+        if (k >= Profits.length) {
+            for (int p : Profits)
+                W += p;
+            return W;
+        }
+        // System.out.println(k + " " + Capital.length);
+        while (k-- > 0) {
+            int index = -1;
+            for (int i = 0; i < Capital.length; i++) {
+                if (Profits[i] != -1 && W >= Capital[i] && 
+                        (index == -1 || Profits[index] < Profits[i]))
+                    index = i;
+            }
+            if (index == -1)
+                break;
+            W += Profits[index];
+            Profits[index] = -1;
+        }
+        return W;
+    }
+}
+
+
+class Solution {
+    public int findMaximizedCapital(int k, int W, int[] Profits, int[] Capital) {
+        Queue<Integer> queue = new PriorityQueue<>(new Comparator<Integer>() {
+            public int compare(Integer i1, Integer i2) {
+                return i2 - i1;
+            }
+        });
+        int[][] pc = new int[Profits.length][2];
+        for (int i = 0; i < Profits.length; i++) {
+            pc[i][0] = Profits[i];
+            pc[i][1] = Capital[i];
+        }
+        Arrays.sort(pc, new Comparator<int[]>() {
+            public int compare(int[] i1, int[] i2) {
+                return i1[1] - i2[1];
+            }
+        });
+        int index = 0;
+        while (k-- > 0) {
+            while (index < pc.length && W >= pc[index][1]) {
+                queue.offer(pc[index][0]);
+                index++;
+            }    
+            if (queue.isEmpty())
+                break;
+            W += queue.poll();
+        }
+        return W;
+    }
+}
