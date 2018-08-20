@@ -14,3 +14,22 @@ class Solution {
         return cups[query_row][query_glass] > 1 ? 1 : cups[query_row][query_glass];
     }
 }
+
+
+class Solution {
+    public double champagneTower(int poured, int query_row, int query_glass) {
+        double[] cups = new double[query_row+1];
+        cups[0] = poured;
+        for (int i = 0; i < query_row; i++) {
+            for (int j = i; j >= 0; j--) {
+                if (cups[j] > 1) {
+                    cups[j+1] += (cups[j]-1) / 2;
+                    cups[j] = (cups[j]-1) / 2;
+                } else {
+                    cups[j] = 0;
+                }
+            }
+        }
+        return cups[query_glass] > 1 ? 1 : cups[query_glass];
+    }
+}

@@ -92,3 +92,33 @@ class Solution {
         return res;
     }
 }
+
+
+// amazing ideas, sort the indices directly 
+class Solution {
+    public int[] findDiagonalOrder(int[][] matrix) {
+        if (matrix.length == 0)
+            return new int[0];
+        Integer[] indices = new Integer[matrix.length * matrix[0].length];
+        for (int i = 0; i < indices.length; i++)
+            indices[i] = i;
+        Arrays.sort(indices, new Comparator<Integer>() {
+            public int compare(Integer i1, Integer i2) {
+                int row1 = i1 / matrix[0].length, col1 = i1 % matrix[0].length;
+                int row2 = i2 / matrix[0].length, col2 = i2 % matrix[0].length;
+                if (row1 + col1 == row2 + col2) {
+                    if ((row1 + col1) % 2 == 0)
+                        return col1 - col2;
+                    else
+                        return row1 - row2;
+                } else {
+                    return row1 + col1 - row2 - col2;
+                }
+            }    
+        });
+        int[] res = new int[indices.length];
+        for (int i = 0; i < res.length; i++)
+            res[i] = matrix[indices[i] / matrix[0].length][indices[i] % matrix[0].length];
+        return res;
+    }
+}
