@@ -34,7 +34,7 @@ class Solution {
 
 class Solution {
     public boolean canFinish(int numCourses, int[][] prerequisites) {
-        // adjacency list 
+        // adjacency matrix  
         boolean[][] adj = new boolean[numCourses][numCourses];
         for (int[] i : prerequisites)
             adj[i[0]][i[1]] = true;
@@ -94,5 +94,37 @@ class Solution {
         }
         states[vertex] = 2;
         return true;
+    }
+}
+
+
+// the BFS version using indegrees to remove edges gradually 
+class Solution {
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        // adjacency list
+        List<Integer>[] adj = new List[numCourses];
+        for (int i = 0; i < adj.length; i++)
+            adj[i] = new LinkedList<>();
+        for (int[] i : prerequisites)
+            adj[i[0]].add(i[1]);
+        int[] indegree = new int[numCourses];
+        for (int[] i : prerequisites)
+            indegree[i[1]]++;
+        Queue<Integer> queue = new LinkedList<>();
+        for (int i = 0; i < indegree.length; i++) {
+            if (indegree[i] == 0)
+                queue.offer(i);
+        }
+        int count = 0;
+        while (!queue.isEmpty()) {
+            count++;
+            int u = queue.poll();
+            for (int v : adj[u]) {
+                indegree[v]--;
+                if (indegree[v] == 0)
+                    queue.offer(v);
+            }
+        }
+        return count == numCourses;
     }
 }
