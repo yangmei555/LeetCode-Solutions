@@ -48,11 +48,19 @@ class Solution {
 
         queue.offer(new int[]{K, 0});
         while (!queue.isEmpty()) {
-            int u = queue.poll()[0];
-            if (finished[u])
+            // int u = queue.poll()[0];
+            // if (finished[u])
+            //     continue;
+            // else
+            //     finished[u] = true;
+
+            int[] node = queue.poll();
+            int u = node[0];
+            // decide whether vertex u has been dequeued before, 
+            // whether this is the node before the decrease key operation on u 
+            if (dist[u] < node[1]) 
                 continue;
-            else
-                finished[u] = true;
+            
             for (int[] vw : adj[u]) {
                 if (dist[u] + vw[1] < dist[vw[0]]) {
                     dist[vw[0]] = dist[u] + vw[1];

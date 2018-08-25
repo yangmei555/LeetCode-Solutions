@@ -34,3 +34,34 @@ class Solution {
         return true;
     }
 }
+
+
+// the BFS version using the characteristics of indegree 
+class Solution {
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        List<Integer>[] adj = new List[numCourses];
+        int[] res = new int[numCourses], indegree = new int[numCourses];
+        for (int i = 0; i < adj.length; i++)
+            adj[i] = new LinkedList<>();
+        for (int[] i : prerequisites) {
+            adj[i[1]].add(i[0]);
+            indegree[i[0]]++;
+        }
+        Queue<Integer> queue = new LinkedList<>();
+        for (int i = 0; i < indegree.length; i++) {
+            if (indegree[i] == 0)
+                queue.offer(i);
+        }
+        int index = 0;
+        while (!queue.isEmpty()) {
+            int u = queue.poll();
+            res[index++] = u;
+            for (int v : adj[u]) {
+                indegree[v]--;
+                if (indegree[v] == 0)
+                    queue.offer(v);
+            }
+        }
+        return index == numCourses ? res : new int[0];
+    }
+}
