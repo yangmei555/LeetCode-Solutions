@@ -60,7 +60,7 @@ class Solution {
             // whether this is the node before the decrease key operation on u 
             if (dist[u] < node[1]) 
                 continue;
-            
+
             for (int[] vw : adj[u]) {
                 if (dist[u] + vw[1] < dist[vw[0]]) {
                     dist[vw[0]] = dist[u] + vw[1];
@@ -105,5 +105,44 @@ class Solution {
                 helper(vw[0], adj, dist);
             }
         }
+    }
+}
+
+
+// replace the PriorityQueue with array and replace adj list with adj matrix, but runs faster 
+class Solution {
+    public int networkDelayTime(int[][] times, int N, int K) {
+        int[][] adj = new int[N+1][N+1];
+        for (int i = 0; i < adj.length; i++)
+            Arrays.fill(adj[i], Integer.MAX_VALUE);
+        for (int[] t : times)
+            adj[t[0]][t[1]] = t[2];
+        int[] dist = new int[N+1];
+        boolean[] finished = new boolean[N+1];
+        Arrays.fill(dist, Integer.MAX_VALUE);
+        dist[K] = 0;
+        boolean[] visited = new boolean[N+1];
+        while (true) {
+            int u = 0;
+            for (int i = 1; i <= N; i++) {
+                if (!visited[i] && dist[i] < dist[u])
+                    u = i;
+            }    
+            if (u == 0)
+                break;
+            visited[u] = true;
+            for (int v = 1; v <= N; v++) {
+                if (adj[u][v] != Integer.MAX_VALUE && dist[u] + adj[u][v] < dist[v]) 
+                    dist[v] = dist[u] + adj[u][v];
+            }
+        }
+        int res = 0;
+        for (int i = 1; i < dist.length; i++) {
+            if (dist[i] == Integer.MAX_VALUE)
+                return -1;
+            else
+                res = res > dist[i] ? res : dist[i];
+        }
+        return res;
     }
 }
