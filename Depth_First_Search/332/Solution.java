@@ -33,3 +33,51 @@ class Solution {
         }
     }
 }
+
+
+// the correct way to get the Euler path 
+// after visiting a node, removing that edge 
+class Solution {
+    public List<String> findItinerary(String[][] tickets) {
+        Map<String, Queue<String>> map = new HashMap<>();
+        for (String[] str : tickets) {
+            map.putIfAbsent(str[0], new PriorityQueue<>());
+            map.get(str[0]).offer(str[1]);
+        }
+        List<String> res = new LinkedList<>();
+        helper(map, "JFK", res);
+        return res;
+    }
+    
+    public void helper(Map<String, Queue<String>> map, String start, List<String> res) {
+        while (map.containsKey(start) && !map.get(start).isEmpty()) {
+            String arrive = map.get(start).poll();
+            helper(map, arrive, res);
+        }
+        res.add(0, start);
+    }
+}
+
+
+// iterative version to find the Euler path 
+class Solution {
+    public List<String> findItinerary(String[][] tickets) {
+        Map<String, Queue<String>> map = new HashMap<>();
+        for (String[] str : tickets) {
+            map.putIfAbsent(str[0], new PriorityQueue<>());
+            map.get(str[0]).offer(str[1]);
+        }
+        List<String> res = new LinkedList<>();
+        Stack<String> stack = new Stack<>();
+        stack.push("JFK");
+        while (!stack.isEmpty()) {
+            if (map.containsKey(stack.peek()) && map.get(stack.peek()).size() != 0) {
+                stack.push(map.get(stack.peek()).poll());
+            } else {
+                res.add(stack.pop());
+            }
+        }
+        Collections.reverse(res);
+        return res;
+    }
+}
