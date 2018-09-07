@@ -29,3 +29,61 @@ class Solution {
         return false;
     }
 }
+
+
+// the same algorithm as Problem 332 , finding Euler path 
+// walk ahead and remove an edge for each step, when going back, append that edge to result 
+// the result is lexicographically largest 
+class Solution {
+    public String crackSafe(int n, int k) {
+        int nums = 1;
+        for (int i = 1; i < n; i++)
+            nums *= k;
+        LinkedList<Integer>[] adj = new LinkedList[nums];
+        for (int i = 0; i < nums; i++) {
+            adj[i] = new LinkedList<>();
+            for (int j = 0; j < k; j++)
+                adj[i].add(j);
+        }
+        StringBuilder sb = new StringBuilder(), snode = new StringBuilder();
+        for (int i = 1; i < n; i++)
+            snode.append(0);
+        helper(adj, sb, snode.toString(), 0, k);
+        sb.append(snode);
+        return sb.toString();
+    }
+    
+    public void helper(LinkedList<Integer>[] adj, StringBuilder sb, String snode, int nnode, int k) {
+        int size = adj[nnode].size(), scale = adj.length;
+        int newnnode = snode.length() == 0 ? -1 : nnode * k - (snode.charAt(0) - '0') * scale;
+        while (adj[nnode].size() != 0) {
+            int next = adj[nnode].poll();
+            helper(adj, sb, (snode + next).substring(1), newnnode == -1 ? 0 : newnnode + next, k);
+            sb.append(next);
+        }
+    }
+}
+
+
+// loop from back to front .   it works, but I don't know why it works... 
+class Solution {
+    public String crackSafe(int n, int k) {
+        int count = 1;
+        for (int i = 1; i < n; i++)
+            count *= k;
+        int[] map = new int[count];
+        for (int i = 0; i < map.length; i++)
+            map[i] = k-1;
+        StringBuilder sb = new StringBuilder();
+        for (int i = 1; i < n; i++)
+            sb.append('0');
+        int prefix = 0, index = 0, remain = count * k;
+        while (remain-- > 0) {
+            int digit = map[prefix]--;
+            if (n != 1)
+                prefix = (prefix * k - count * (sb.charAt(index++) - '0')) + digit;
+            sb.append(digit);
+        }
+        return sb.toString();
+    }
+}

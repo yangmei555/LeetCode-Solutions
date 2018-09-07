@@ -1,6 +1,6 @@
 // cannot run from back to front to determine the lexicographically smallest answer 
 // because the ball running process is irreversible 
-// have to backtrack every time when meeting a tie 
+// one way is to backtrack every time when meeting a tie 
 class Solution {
     int[][] dir = new int[][]{{1, 0}, {0, -1}, {0, 1}, {-1, 0}};
     char[] map = new char[]{'d', 'l', 'r', 'u'};
@@ -79,6 +79,63 @@ class Solution {
                 c = temp2;
             }
             return sb.reverse().toString();
+        }
+    }
+}
+
+
+// store the path information in each point , no need to backtrack when finding a tie 
+class Solution {
+    int[][] dir = new int[][]{{1, 0}, {0, -1}, {0, 1}, {-1, 0}};
+    char[] map = new char[]{'d', 'l', 'r', 'u'};
+    public String findShortestWay(int[][] maze, int[] ball, int[] hole) {
+        int row = maze.length, col = maze[0].length;
+        boolean[][] visited = new boolean[row][col];
+        Queue<Point> queue = new PriorityQueue<>(new Comparator<Point>() {
+            public int compare(Point p1, Point p2) {
+                if (p1.dist != p2.dist)
+                    return p1.dist - p2.dist;
+                else
+                    return p1.str.compareTo(p2.str);
+            }
+        });
+        queue.offer(new Point(ball[0], ball[1], 0, ""));
+        while (!queue.isEmpty()) {
+            Point node = queue.poll();
+            int r = node.x, c = node.y;
+            // the first encountered (hole[0],hole[1]) is the smallest possible 
+            if (r == hole[0] && c == hole[1])
+                return node.str;
+            if (visited[r][c])
+                continue;
+            visited[r][c] = true;
+            for (int i = 0; i < dir.length; i++) {
+                int x = r, y = c;
+                while (x >= 0 && x < row && y >= 0 && y < col && maze[x][y] == 0 && 
+                                                        (x != hole[0] || y != hole[1])) {
+                    x += dir[i][0];
+                    y += dir[i][1];
+                }
+                if (x < 0 || x >= row || y < 0 || y >= col || maze[x][y] == 1) {
+                    x -= dir[i][0];
+                    y -= dir[i][1];
+                }
+                int len = Math.abs(x - r) + Math.abs(y - c);
+                // comparing or not before enqueue is the same 
+                queue.offer(new Point(x, y, node.dist + len, node.str + map[i]));
+            }
+        }
+        return "impossible";
+    }
+    
+    class Point {
+        int x, y, dist;
+        String str;
+        public Point(int x, int y, int dist, String str) {
+            this.x = x;
+            this.y = y;
+            this.dist = dist;
+            this.str = str;
         }
     }
 }

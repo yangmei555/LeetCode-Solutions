@@ -36,12 +36,15 @@ class Solution {
             int require = flag ? 1 : 2;
             if (count[map[c-'A']] >= require) {
                 count[map[c-'A']] -= require;
-                String str = board.substring(0, i) + c + (flag ? "" : c) + board.substring(i);
+                String str = board.substring(0, i) + 
+                                (flag ? board.substring(i+2) : board.substring(i+1));
                 int ret = helper(str, count, map);
                 if (ret != -1)
                     res = res < require + ret ? res : require + ret;
                 count[map[c-'A']] += require;
             }
+            if (flag)
+                i++;
         }
         return res == Integer.MAX_VALUE ? -1 : res;
     }

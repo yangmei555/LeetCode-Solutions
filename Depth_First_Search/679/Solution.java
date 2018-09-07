@@ -1,3 +1,4 @@
+// use reverse polish notation to express the expression 
 class Solution {
     public boolean judgePoint24(int[] nums) {
         boolean[] used = new boolean[nums.length];
@@ -23,6 +24,7 @@ class Solution {
                     stack[i++] = c - '0';
                 }
             }
+            // floating point number divided by 0 is infinity and will not cause exception 
             return Math.abs(stack[0] - 24) <= 1e-6;
         } else {
             int count = nums.length;
@@ -52,5 +54,49 @@ class Solution {
             }
             return false;
         }
+    }
+}
+
+
+// each time remove 2 numbers and replace them with their result 
+// try each possibility only once, search space reduced comparing with the above solution 
+class Solution {
+    public boolean judgePoint24(int[] nums) {
+        double[] input = new double[nums.length];
+        for (int i = 0; i < nums.length; i++)
+            input[i] = nums[i];
+        return helper(input, input.length);
+    }
+    
+    public boolean helper(double[] input, int len) {
+        if (len == 1)
+            return Math.abs(input[0] - 24) <= 1e-6;
+        for (int i = 0; i < len; i++) {
+            for (int j = i+1; j < len; j++) {
+                double x = input[i], y = input[j];
+                input[j] = input[len-1];
+                input[i] = x + y;
+                if (helper(input, len-1))
+                    return true;
+                input[i] = x - y;
+                if (helper(input, len-1))
+                    return true;
+                input[i] = y - x;
+                if (helper(input, len-1))
+                    return true;
+                input[i] = x * y;
+                if (helper(input, len-1))
+                    return true;
+                input[i] = x / y;
+                if (helper(input, len-1))
+                    return true;
+                input[i] = y / x;
+                if (helper(input, len-1))
+                    return true;
+                input[i] = x;
+                input[j] = y;
+            }
+        }
+        return false;
     }
 }
