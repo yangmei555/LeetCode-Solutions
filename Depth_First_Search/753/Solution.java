@@ -65,7 +65,7 @@ class Solution {
 }
 
 
-// loop from back to front .   it works, but I don't know why it works... 
+// loop from back to front .   it works, but I don't know why it works... inspired by others 
 class Solution {
     public String crackSafe(int n, int k) {
         int count = 1;
