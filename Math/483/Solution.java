@@ -55,3 +55,30 @@ class Solution {
         return num - 1 + "";
     }
 }
+
+
+// notice that, if 1 + b + b^2 + b^3 + ... + b^(k-1) == num, 
+// then, b^(k-1) < num < (1+b)^(k-1), num^(1/(k-1)) - 1 < b < num^(1/(k-1)) 
+// so b can only possibly be (int)num^(1/(k-1)) . 
+// this will take O(logN * logN), since the upper bound of k is logN and each round take O(k) 
+class Solution {
+    public String smallestGoodBase(String n) {
+        long num = Long.valueOf(n);
+        int k = (int)(Math.log(num + 1) / Math.log(2));
+        while (k >= 3) {
+            // System.out.println(k);
+            int cand = (int)Math.pow(num, 1.0 / (k-1));
+            if ((num - 1) % cand == 0) {
+                long sum = 0, cur = 1;
+                for (int i = 0; i < k; i++) {
+                    sum += cur;
+                    cur *= cand;
+                }
+                if (sum == num)
+                    return cand + "";
+            }
+            k--;
+        }
+        return num - 1 + "";
+    }
+}

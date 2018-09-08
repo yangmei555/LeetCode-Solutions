@@ -31,7 +31,7 @@ class Solution {
 }
 
 
-// the same algorithm as Problem 332 , finding Euler path 
+// the same algorithm as Problem 332 , finding Euler path , no duplicate visit 
 // walk ahead and remove an edge for each step, when going back, append that edge to result 
 // the result is lexicographically largest 
 class Solution {
@@ -65,7 +65,8 @@ class Solution {
 }
 
 
-// loop from back to front .   it works, but I don't know why it works... inspired by others 
+// loop from back to front .   
+// it works, but I don't know why it works... inspired by others 
 class Solution {
     public String crackSafe(int n, int k) {
         int count = 1;
@@ -84,6 +85,58 @@ class Solution {
                 prefix = (prefix * k - count * (sb.charAt(index++) - '0')) + digit;
             sb.append(digit);
         }
+        return sb.toString();
+    }
+}
+
+
+// according to https://en.wikipedia.org/wiki/De_Bruijn_sequence
+class Solution {
+    public String crackSafe(int n, int k) {
+        int count = 1;
+        for (int i = 1; i < n; i++)
+            count *= k;
+        int[] map = new int[count * k];
+        for (int i = 0; i < k; i++) {
+            for (int j = 0; j < count; j++)
+                map[i * count + j] = j * k + i;
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < map.length; i++) {
+            int j = i;
+            while (map[j] >= 0) {
+                sb.append(j / count);
+                int next = map[j];
+                map[j] = -1;
+                j = next;
+            }
+        }
+        for (int i = 1; i < n; i++)
+            sb.append('0');
+        return sb.toString();
+    }
+}
+
+
+// no need to pre calculate the indices 
+// more efficient than the above solution 
+class Solution {
+    public String crackSafe(int n, int k) {
+        int count = 1;
+        for (int i = 1; i < n; i++)
+            count *= k;
+        boolean[] visited = new boolean[count * k];
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < visited.length; i++) {
+            int j = i;
+            while (!visited[j]) {
+                sb.append(j / count);
+                visited[j] = true;
+                j = j % count * k + j / count ;
+            }
+        }
+        for (int i = 1; i < n; i++)
+            sb.append('0');
         return sb.toString();
     }
 }
