@@ -82,3 +82,33 @@ class Solution {
         return num - 1 + "";
     }
 }
+
+
+// use binary search to locate the base 
+class Solution {
+    public String smallestGoodBase(String n) {
+        long num = Long.valueOf(n);
+        int k = (int)(Math.log(num + 1) / Math.log(2));
+        while (k >= 3) {
+            // System.out.println(k);
+            int upper = (int)Math.pow(num, 1.0 / (k-1));
+            int lower = (int)Math.pow(num + 1, 1.0 / k);
+            while (lower <= upper) {
+                int mid = (lower + upper) / 2;
+                long sum = 0, cur = 1;
+                for (int i = 0; i < k; i++) {
+                    sum += cur;
+                    cur *= mid;
+                }
+                if (sum == num)
+                    return mid + "";
+                else if (sum < num)
+                    lower = mid + 1;
+                else
+                    upper = mid - 1;
+            }
+            k--;
+        }
+        return num - 1 + "";
+    }
+}
