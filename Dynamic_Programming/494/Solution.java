@@ -46,6 +46,7 @@ class Solution {
 }
 
 
+// sum(positive) - sum(negative) = S, so 2 * sum(positive) = S + sum(total)
 class Solution {
     public int findTargetSumWays(int[] nums, int S) {
         int sum = 0;
@@ -64,3 +65,45 @@ class Solution {
     }
 }
 
+
+// sum(positive) - sum(negative) = S, so sum(negative) = (sum(total) - S) / 2 
+class Solution {
+    public int findTargetSumWays(int[] nums, int S) {
+        int sum = 0;
+        for (int n : nums)
+            sum += n;
+        if (sum < S || -sum > S || (sum - S) % 2 == 1)
+            return 0;
+        int tar = (sum - S) / 2;
+        Map<Integer, Integer> map = new HashMap<>();
+        map.put(0, 1);
+        for (int n : nums) {
+            Map<Integer, Integer> temp = new HashMap<>(map);
+            for (int i : map.keySet()) {
+                temp.put(i+n, map.get(i) + map.getOrDefault(i+n, 0));
+            }
+            map = temp;
+        }
+        return map.get(tar);
+    }
+}
+
+
+// sum(positive) - sum(negative) = S, so sum(negative) = (sum(total) - S) / 2 
+class Solution {
+    public int findTargetSumWays(int[] nums, int S) {
+        int sum = 0;
+        for (int n : nums)
+            sum += n;
+        if (sum < S || -sum > S || (sum - S) % 2 == 1)
+            return 0;
+        int tar = (sum - S) / 2;
+        int[] dp = new int[tar+1];
+        dp[0] = 1;        
+        for (int i = 0; i < nums.length; i++) {
+            for (int j = tar; j >= nums[i]; j--) 
+                dp[j] += dp[j-nums[i]];
+        }
+        return dp[tar];
+    }
+}
