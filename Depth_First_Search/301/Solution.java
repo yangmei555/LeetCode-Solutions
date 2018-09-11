@@ -49,6 +49,49 @@ class Solution {
 }
 
 
+// a more concise way to implement the above idea 
+class Solution {
+    public List<String> removeInvalidParentheses(String s) {
+        int left = 0, right = 0;
+        char[] ch = s.toCharArray();
+        for (char c : ch) {
+            if (c == '(') {
+                left++;
+            } else if (c == ')') {
+                if (left > 0)
+                    left--;
+                else
+                    right++;
+            }
+        }
+        Set<String> set = new HashSet<>();
+        helper(ch, 0, left, right, 0, new StringBuilder(), set);
+        return new LinkedList<>(set);
+    }
+    
+    public void helper(char[] ch, int index, int left, int right, int open, 
+                                                            StringBuilder sb, Set<String> set) {
+        if (left < 0 || right < 0 || open < 0)
+            return;
+        if (index == ch.length) {
+            if (left == 0 && right == 0 && open == 0)
+                set.add(sb.toString());
+        } else {
+            if (ch[index] == '(') {
+                helper(ch, index+1, left-1, right, open, sb, set);
+                helper(ch, index+1, left, right, open+1, sb.append('('), set);
+            } else if (ch[index] == ')') {
+                helper(ch, index+1, left, right-1, open, sb, set);
+                helper(ch, index+1, left, right, open-1, sb.append(')'), set);
+            } else {
+                helper(ch, index+1, left, right, open, sb.append(ch[index]), set);
+            }
+            sb.deleteCharAt(sb.length()-1);
+        }
+    }
+}
+
+
 // use linkedlist rather than hashset , and only use the extra number of '('
 class Solution {
     public List<String> removeInvalidParentheses(String s) {
@@ -102,5 +145,42 @@ class Solution {
                 sb.deleteCharAt(sb.length()-1);
             }
         }
+    }
+}
+
+
+// a brilliant idea borrowed from others 
+// every time encounter a miss match, begin to remove the close symbol 
+// if the close symbol does not overwhelm, reverse the string and reverse the two symbols 
+class Solution {
+    public List<String> removeInvalidParentheses(String s) {
+        List<String> res = new LinkedList<>();
+        helper(s, 0, 0, '(', ')', res);
+        // System.out.println(res.size());
+        return res;
+    }
+    
+    public void helper(String s, int lastI, int lastJ, char open, char close, List<String> res) {
+        char[] ch = s.toCharArray();
+        for (int count = 0, i = lastI; i < ch.length; i++) {
+            if (ch[i] == open)
+                count++;
+            else if (ch[i] == close)
+                count--;
+            if (count < 0) {
+                for (int j = lastJ; j <= i; j++) {
+                    if (ch[j] == close && (j == lastJ || ch[j-1] != ch[j])) {
+                        String str = s.substring(0, j) + s.substring(j+1);
+                        helper(str, i, j, open, close, res);
+                    }
+                }
+                return;
+            }
+        }
+        String str = new StringBuilder(s).reverse().toString();
+        if (open == '(')
+            helper(str, 0, 0, close, open, res);
+        else
+            res.add(str);
     }
 }
