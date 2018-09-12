@@ -29,3 +29,31 @@ public class Solution extends Reader4 {
         return index;
     }
 }
+
+
+/* The read4 API is defined in the parent class Reader4.
+      int read4(char[] buf); */
+
+public class Solution extends Reader4 {
+    /**
+     * @param buf Destination buffer
+     * @param n   Maximum number of characters to read
+     * @return    The number of characters read
+     */
+    char[] ch = new char[4];
+    int cur = 0, get = 0;
+    public int read(char[] buf, int n) {
+        int index = 0;
+        while (index < n) {
+            if (cur == 0)
+                get = read4(ch);
+            while (cur < get && index < n)
+                buf[index++] = ch[cur++];
+            if (cur == get)
+                cur = 0;
+            if (get != 4)
+                break;
+        }
+        return index;
+    }
+}
