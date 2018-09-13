@@ -67,6 +67,7 @@ class Solution {
     public boolean isNumber(String s) {
         s = s.trim();
         char[] ch = s.toCharArray();
+        // actually only one of num and numAfterE is enough 
         boolean e = false, dot = false, num = false, numAfterE = false;
         for (int i = 0; i < ch.length; i++) {
             if (ch[i] >= '0' && ch[i] <= '9') {

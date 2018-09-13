@@ -114,3 +114,106 @@ class Solution {
         return sb.toString();
     }
 }
+
+
+// use 1 priority queue and 1 ordinary wait queue 
+class Solution {
+    public String rearrangeString(String s, int k) {
+        if (k <= 1)
+            return s;
+        Node[] nodes = new Node[26];
+        for (int i = 0; i < nodes.length; i++)
+            nodes[i] = new Node((char)('a'+i), 0);
+        char[] ch = s.toCharArray();
+        for (char c : ch)
+            nodes[c-'a'].freq++;
+        Queue<Node> queue1 = new PriorityQueue<>(new Comparator<Node>() {
+            public int compare(Node n1, Node n2) {
+                return n2.freq - n1.freq;
+            }    
+        });
+        Queue<Node> queue2 = new LinkedList<>();
+        for (Node n : nodes) {
+            if (n.freq != 0)
+                queue1.offer(n);
+        }
+        StringBuilder sb = new StringBuilder();
+        while (sb.length() < ch.length) {
+            if (queue1.isEmpty())
+                return "";
+            Node node = queue1.poll();
+            sb.append(node.c);
+            node.freq--;
+            queue2.offer(node);
+            if (queue2.size() == k) {
+                Node n = queue2.poll();
+                if (n.freq != 0)
+                    queue1.offer(n);
+            }
+        }
+        return sb.toString();
+    }
+    
+    class Node {
+        char c;
+        int freq;
+        public Node(char c, int freq) {
+            this.c = c;
+            this.freq = freq;
+        }
+    }
+}
+
+
+// use 1 temp list 
+class Solution {
+    public String rearrangeString(String s, int k) {
+        if (k <= 1)
+            return s;
+        Node[] nodes = new Node[26];
+        for (int i = 0; i < nodes.length; i++)
+            nodes[i] = new Node((char)('a'+i), 0);
+        char[] ch = s.toCharArray();
+        for (char c : ch)
+            nodes[c-'a'].freq++;
+        Queue<Node> queue = new PriorityQueue<>(new Comparator<Node>() {
+            public int compare(Node n1, Node n2) {
+                if (n1.freq == n2.freq)
+                    return n1.c - n2.c;
+                else
+                    return n2.freq - n1.freq;
+            }    
+        });
+        for (Node n : nodes) {
+            if (n.freq != 0)
+                queue.offer(n);
+        }
+        StringBuilder sb = new StringBuilder();
+        while (sb.length() < ch.length) {
+            List<Node> temp = new LinkedList<>();
+            int turn = Math.min(k, ch.length-sb.length());
+            for (int i = 0; i < turn; i++) {
+                if (queue.isEmpty())
+                    return "";
+                Node node = queue.poll();
+                sb.append(node.c);
+                node.freq--;
+                temp.add(node);
+            }
+            for (Node n : temp) {
+                if (n.freq != 0)
+                    queue.offer(n);
+            }
+        }
+        return sb.toString();
+    }
+    
+    class Node {
+        char c;
+        int freq;
+        public Node(char c, int freq) {
+            this.c = c;
+            this.freq = freq;
+        }
+    }
+}

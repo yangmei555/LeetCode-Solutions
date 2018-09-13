@@ -19,3 +19,21 @@ class Solution {
         return res;
     }
 }
+
+
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        char[] ch = s.toCharArray();
+        int[] map = new int[128];
+        Arrays.fill(map, -1);
+        int res = 0, left = 0, right = 0;
+        while (right < ch.length) {
+            if (map[ch[right]] != -1) 
+                left = Math.max(left, map[ch[right]]+1);
+            map[ch[right]] = right;
+            res = Math.max(res, right-left+1);
+            right++;
+        }
+        return res;
+    }
+}
