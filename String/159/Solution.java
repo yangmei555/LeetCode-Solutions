@@ -71,3 +71,24 @@ class Solution {
         return res;
     }
 }
+
+
+class Solution {
+    public int lengthOfLongestSubstringTwoDistinct(String s) {
+        char[] ch = s.toCharArray();
+        int left = 0, mid = -1, right = 0, res = 0;
+        while (right < ch.length) {
+            if (right == 0 || ch[right-1] == ch[right]) {
+                right++;
+                continue;
+            }
+            if (mid >= 0 && ch[mid] != ch[right]) {
+                res = Math.max(res, right-left);
+                left = mid + 1;
+            }
+            mid = right - 1;
+            right++;
+        }
+        return Math.max(res, right-left);
+    }
+}
