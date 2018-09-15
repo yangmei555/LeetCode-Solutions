@@ -94,3 +94,56 @@ class Solution {
         return res;
     }
 }
+
+
+class Solution {
+    public String minWindow(String s, String t) {
+        char[] source = s.toCharArray(), target = t.toCharArray();
+        int[] map = new int[128], record = new int[128];
+        for (char c : target)
+            map[c]++;
+        String res = "";
+        int count = 0, start = 0;
+        for (int i = 0; i < source.length; i++) {
+            if (record[source[i]]++ < map[source[i]])
+                count++;
+            if (count == target.length) {
+                while (--record[source[start]] >= map[source[start]])
+                    start++;
+                if (res.length() == 0 || res.length() > i-start+1)
+                    res = s.substring(start, i+1);
+                count--;
+                start++;
+                // while (start <= i && record[source[start]] > map[source[start]])
+                //     record[source[start++]]--;
+            }
+        }
+        return res;
+    }
+}
+
+
+// only need one map array 
+class Solution {
+    public String minWindow(String s, String t) {
+        char[] source = s.toCharArray(), target = t.toCharArray();
+        int[] map = new int[128];
+        for (char c : target)
+            map[c]++;
+        String res = "";
+        int count = 0, start = 0;
+        for (int i = 0; i < source.length; i++) {
+            if (map[source[i]]-- > 0)
+                count++;
+            if (count == target.length) {
+                while (++map[source[start]] <= 0)
+                    start++;
+                count--;
+                if (res.length() == 0 || res.length() > i-start+1)
+                    res = s.substring(start, i+1);
+                start++;
+            }
+        }
+        return res;
+    }
+}

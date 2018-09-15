@@ -108,3 +108,52 @@ class Solution {
         return stackIndex == 0 && sb.length() == 0;
     }
 }
+
+
+class Solution {
+    public boolean isValid(String code) {
+        if (code.length() < 2 || code.charAt(0) != '<' || code.charAt(code.length()-1) != '>')
+            return false;
+        Stack<String> stack = new Stack<>();
+        for (int i = 0; i < code.length(); i++) {
+            if (code.charAt(i) == '<') {
+                if (code.charAt(i+1) == '!') {
+                    if (code.indexOf("<![CDATA[", i) != i || stack.isEmpty())
+                        return false;
+                    int index = code.indexOf("]]>", i);
+                    if (index == -1)
+                        return false;
+                    i = index + 2;
+                } else {
+                    boolean end = code.charAt(i+1) == '/';
+                    int index = code.indexOf('>', i);
+                    if (index == -1)
+                        return false;
+                    String str = code.substring(end ? i+2 : i+1, index);
+                    if (!helper(str))
+                        return false;
+                    if (end) {
+                        if (stack.isEmpty() || !stack.pop().equals(str))
+                            return false;
+                        if (stack.isEmpty())
+                            return index+1 == code.length();
+                    } else {
+                        stack.push(str);
+                    }
+                    i = index;
+                }
+            }
+        }
+        return false;
+    }
+    
+    public boolean helper(String str) {
+        if (str.length() == 0 || str.length() > 9)
+            return false;
+        for (char c : str.toCharArray()) {
+            if (c < 'A' || c > 'Z')
+                return false;
+        }
+        return true;
+    }
+}
