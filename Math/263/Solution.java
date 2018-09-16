@@ -30,3 +30,20 @@ class Solution {
         return true;
     }
 }
+
+
+class Solution {
+    public boolean isUgly(int num) {
+        if (num == 0)
+            return false;
+        int x = 2;
+        while (num != 1) {
+            if (x > 5)
+                return false;
+            while (num % x == 0)
+                num /= x;
+            x++;
+        }
+        return true;
+    }
+}
