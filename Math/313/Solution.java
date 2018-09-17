@@ -69,6 +69,7 @@ class Solution {
 }
 
 
+// theoretically fastest solution, O(n * log(primes.length))  
 class Solution {
     public int nthSuperUglyNumber(int n, int[] primes) {
         int[] res = new int[n];
@@ -102,5 +103,92 @@ class Solution {
             index = i;
             value = v;
         }
+    }
+}
+
+
+class Solution {
+    public int nthSuperUglyNumber(int n, int[] primes) {
+        Queue<Integer> queue = new PriorityQueue<>();
+        queue.offer(1);
+        int res = 0;
+        for (int i = 0; i < n; i++) {
+            res = queue.poll();
+            for (int p : primes) {
+                if (res <= Integer.MAX_VALUE / p)
+                    queue.offer(res * p);
+            }
+            while (!queue.isEmpty() && queue.peek() == res)
+                queue.poll();
+        }
+        return res;
+    }
+}
+
+
+// has redundant inner loop 
+class Solution {
+    public int nthSuperUglyNumber(int n, int[] primes) {
+        int[] ugly = new int[n];
+        ugly[0] = 1;
+        int[] pointers = new int[primes.length];
+        for (int i = 1; i < n; i++) {
+            int min = Integer.MAX_VALUE;
+            for (int j = 0; j < primes.length; j++)
+                min = Math.min(min, ugly[pointers[j]] * primes[j]);
+            ugly[i] = min;
+            for (int j = 0; j < primes.length; j++) {
+                if (min == ugly[pointers[j]] * primes[j])
+                    pointers[j]++;
+            }
+        }
+        return ugly[n-1];
+    }
+}
+
+
+// avoids redundant loop, but has to introduce an additional candidate array 
+class Solution {
+    public int nthSuperUglyNumber(int n, int[] primes) {
+        int[] ugly = new int[n];
+        ugly[0] = 1;
+        int[] pointers = new int[primes.length];
+        int[] cands = new int[primes.length];
+        Arrays.fill(cands, 1);
+        for (int i = 1; i < n; i++) {
+            int min = Integer.MAX_VALUE;
+            for (int j = 0; j < primes.length; j++) {
+                if (cands[j] == ugly[i-1])
+                    cands[j] = ugly[pointers[j]++] * primes[j];
+                min = Math.min(min, cands[j]);
+            }
+            ugly[i] = min;
+        }
+        return ugly[n-1];
+    }
+}
+
+
+// avoids redundant loop and avoids additional candidate array 
+class Solution {
+    public int nthSuperUglyNumber(int n, int[] primes) {
+        int[] ugly = new int[n];
+        ugly[0] = 1;
+        int[] pointers = new int[primes.length];
+        for (int i = 1; i < n; i++) {
+            int min = Integer.MAX_VALUE;
+            int minIndex = -1;
+            for (int j = 0; j < primes.length; j++) {
+                if (min > ugly[pointers[j]] * primes[j]) {
+                    min = ugly[pointers[j]] * primes[j];
+                    minIndex = j;
+                } else if (min == ugly[pointers[j]] * primes[j]) {
+                    pointers[j]++;
+                }
+            }
+            ugly[i] = min;
+            pointers[minIndex]++;
+        }
+        return ugly[n-1];
     }
 }
