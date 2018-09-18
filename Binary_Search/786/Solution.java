@@ -142,3 +142,63 @@ class Solution {
         return null;
     }
 }
+
+
+// start picking indices 0 and 1, and move forward step by step 
+// notice that if initially choose 0 and A.length-1, there will be two directions to 
+// increase the value, so do not choose 0 and A.length-1 
+// also notice that there are no duplicates in the possible pairs 
+class Solution {
+    public int[] kthSmallestPrimeFraction(int[] A, int K) {
+        int x = 0, y = 1;
+        while (true) {
+            int count = 0;
+            for (int i = 0, j = 0; j < A.length; j++) {
+                while (i < j && A[i] * A[y] <= A[j] * A[x])
+                    i++;
+                count += i;
+            }
+            if (count < K) {
+                x++;
+                if (x == y)
+                    y++;
+            }
+            else if (count > K)
+                y++;
+            else
+                break;
+        }
+        return new int[]{A[x], A[y]};
+    }
+}
+
+
+// use sliding window to count 
+// p/q is the largest possible value smaller than or equal to mid 
+// there are no duplicate values, so once count == K we can return {p, q} 
+class Solution {
+    public int[] kthSmallestPrimeFraction(int[] A, int K) {
+        double left = (A[0]+.0) / A[A.length-1], right = 1;
+        while (Math.abs(left-right) >= 1e-9) {
+            double mid = (left + right) / 2;
+            int p = 0, q = 1;
+            int count = 0;
+            for (int i = 0, j = 0; j < A.length; j++) {
+                while (A[i] <= A[j] * mid)
+                    i++;
+                if (i >= 1 && A[i-1] * q > A[j] * p) {
+                    p = A[i-1];
+                    q = A[j];
+                } 
+                count += i;
+            }
+            if (count < K)
+                left = mid;
+            else if (count > K)
+                right = mid;
+            else 
+                return new int[]{p, q};
+        }
+        return null;
+    }
+}
