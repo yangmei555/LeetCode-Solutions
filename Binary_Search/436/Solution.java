@@ -69,3 +69,49 @@ class Solution {
         return res;
     }
 }
+
+
+// using tree map 
+class Solution {
+    public int[] findRightInterval(Interval[] intervals) {
+        TreeMap<Integer, Integer> map = new TreeMap<>();
+        for (int i = 0; i < intervals.length; i++)
+            map.put(intervals[i].start, i);
+        int[] res = new int[intervals.length];
+        for (int i = 0; i < res.length; i++) {
+            Integer key = map.ceilingKey(intervals[i].end);
+            res[i] = key == null ? -1 : map.get(key);
+        }
+        return res;
+    }
+}
+
+
+// the two pointers technique 
+class Solution {
+    public int[] findRightInterval(Interval[] intervals) {
+        int[][] starts = new int[intervals.length][];
+        int[][] ends = new int[intervals.length][];
+        for (int i = 0; i < intervals.length; i++) {
+            starts[i] = new int[]{intervals[i].start, i};
+            ends[i] = new int[]{intervals[i].end, i};
+        }
+        Arrays.sort(starts, new Comparator<int[]>() {
+            public int compare(int[] i1, int[] i2) {
+                return i1[0] - i2[0];
+            }
+        });
+        Arrays.sort(ends, new Comparator<int[]>() {
+            public int compare(int[] i1, int[] i2) {
+                return i1[0] - i2[0];
+            }
+        });
+        int[] res = new int[intervals.length];
+        for (int i = 0, j = 0; j < ends.length; j++) {
+            while (i < starts.length && starts[i][0] < ends[j][0])
+                i++;
+            res[ends[j][1]] = i == starts.length ? -1 : starts[i][1];
+        }
+        return res;
+    }
+}
