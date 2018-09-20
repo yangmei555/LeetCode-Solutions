@@ -15,7 +15,8 @@ class Solution {
         return helper(nums, k, addup, 0, used, map);
     }
     
-    public boolean helper(int[] nums, int k, int addup, int cur, int used, HashMap<String, Boolean> map) {
+    public boolean helper(int[] nums, int k, int addup, int cur, int used, 
+                                                    HashMap<String, Boolean> map) {
         if (cur == addup) {
             cur = 0;
             k--;
