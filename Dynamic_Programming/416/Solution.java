@@ -18,7 +18,8 @@ class Solution {
         return helper(nums, list, nums[nums.length-1], sum, set);
     }
     
-    public boolean helper(int[] nums, HashSet<Integer> list, int cursum, int sum, HashSet<Integer> set) {
+    public boolean helper(int[] nums, HashSet<Integer> list, int cursum, int sum, 
+                                                                    HashSet<Integer> set) {
         if (cursum == sum)
             return true;
         if (cursum > sum)
