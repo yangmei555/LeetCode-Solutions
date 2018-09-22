@@ -107,3 +107,23 @@ class Solution {
         return dp[tar];
     }
 }
+
+
+// 2 dimension dp version 
+class Solution {
+    public int findTargetSumWays(int[] nums, int S) {
+        int sum = 0;
+        for (int n : nums)
+            sum += n;
+        if (sum < S || -sum > S || (sum - S) % 2 == 1)
+            return 0;
+        int tar = (sum - S) / 2;
+        int[][] dp = new int[nums.length+1][tar+1];
+        dp[0][0] = 1;        
+        for (int i = 1; i <= nums.length; i++) {
+            for (int j = 0; j <= tar; j++) 
+                dp[i][j] = (j >= nums[i-1] ? dp[i-1][j-nums[i-1]] : 0) + dp[i-1][j];
+        }
+        return dp[nums.length][tar];
+    }
+}

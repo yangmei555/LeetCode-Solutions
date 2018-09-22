@@ -21,3 +21,20 @@ class Solution {
         return res;
     }
 }
+
+
+// a more concise version 
+class Solution {
+    public int[] productExceptSelf(int[] nums) {
+        int[] res = new int[nums.length];
+        Arrays.fill(res, 1);
+        int left = 0, leftp = 1, right = nums.length-1, rightp = 1;
+        while (left < nums.length) {
+            res[left] *= leftp;
+            res[right] *= rightp;
+            leftp *= nums[left++];
+            rightp *= nums[right--];
+        }
+        return res;
+    }
+}
