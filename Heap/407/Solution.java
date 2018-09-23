@@ -100,3 +100,68 @@ class Solution {
         return res;
     }
 }
+
+
+// a combination of priority queue and dfs, the output of the priority queue is monotonic 
+// this implementation performs the best 
+class Solution {
+    public int trapRainWater(int[][] heightMap) {
+        if (heightMap.length == 0 || heightMap[0].length == 0)
+            return 0;
+        int[][] dir = new int[][]{{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+        int row = heightMap.length, col = heightMap[0].length;
+        Queue<int[]> queue = new PriorityQueue<>(new Comparator<int[]>() {
+            public int compare(int[] i1, int[] i2) {
+                return i1[2] - i2[2];
+            }
+        });
+        for (int j = 0; j < col; j++) {
+            queue.offer(new int[]{0, j, heightMap[0][j]});
+            heightMap[0][j] = Integer.MAX_VALUE;
+            queue.offer(new int[]{row-1, j, heightMap[row-1][j]});
+            heightMap[row-1][j] = Integer.MAX_VALUE;
+        }
+        for (int i = 1; i < row-1; i++) {
+            queue.offer(new int[]{i, 0, heightMap[i][0]});
+            heightMap[i][0] = Integer.MAX_VALUE;
+            queue.offer(new int[]{i, col-1, heightMap[i][col-1]});
+            heightMap[i][col-1] = Integer.MAX_VALUE;
+        }
+        int res = 0;
+        while (!queue.isEmpty()) {
+            int[] rc = queue.poll();
+            for (int[] d : dir) {
+                // int x = rc[0] + d[0], y = rc[1] + d[1];
+                // if (x >= 0 && x < row && y >= 0 && y < col && 
+                //                                     heightMap[x][y] != Integer.MAX_VALUE) {
+                //     if (heightMap[x][y] > rc[2]) {
+                //         queue.offer(new int[]{x, y, heightMap[x][y]});
+                //         heightMap[x][y] = Integer.MAX_VALUE;
+                //     } else {
+                //         res += helper(heightMap, queue, dir, rc[2], x, y);
+                //     }
+                // }
+                res += helper(heightMap, queue, dir, rc[2], rc[0] + d[0], rc[1] + d[1]);
+            }
+        }
+        return res;
+    }
+    
+    public int helper(int[][] heightMap, Queue<int[]> queue, int[][] dir, int bound, int r, int c) {
+        if (r < 0 || r >= heightMap.length || c < 0 || c >= heightMap[0].length || 
+                                                heightMap[r][c] == Integer.MAX_VALUE)
+            return 0;
+        int res = 0;
+        if (heightMap[r][c] > bound) {
+            queue.offer(new int[]{r, c, heightMap[r][c]});
+            heightMap[r][c] = Integer.MAX_VALUE;
+        } else {
+            res += bound - heightMap[r][c];
+            heightMap[r][c] = Integer.MAX_VALUE;
+            for (int[] d : dir) {
+                res += helper(heightMap, queue, dir, bound, r + d[0], c + d[1]);
+            }
+        }
+        return res;
+    }
+}
