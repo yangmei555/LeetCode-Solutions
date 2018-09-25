@@ -41,3 +41,17 @@ class Solution {
             return (int)n+2;
     }
 }
+
+
+class Solution {
+    public int reachNumber(int target) {
+        target = Math.abs(target);
+        int res = 0, step = 0, len = 0;
+        while (len < target || (len - target) % 2 != 0) {
+            step++;
+            len += step;
+            res++;
+        }
+        return res;
+    }
+}
