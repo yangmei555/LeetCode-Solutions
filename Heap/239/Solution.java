@@ -43,3 +43,24 @@ class Solution {
         return res;
     }
 }
+
+
+// another smart idea, borrow from others 
+// keep left max and right max according to segments 
+class Solution {
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        if (nums.length == 0)
+            return new int[0];
+        int[] leftMax = new int[nums.length], rightMax = new int[nums.length];
+        for (int i = 0; i < nums.length; i++) {
+            leftMax[i] = i % k == 0 ? nums[i] : Math.max(nums[i], leftMax[i-1]);
+            int j = nums.length-1-i;
+            rightMax[j] = j % k == k-1 || j == nums.length-1 ? nums[j] : 
+                                                            Math.max(nums[j], rightMax[j+1]);
+        }
+        int[] res = new int[nums.length-k+1];
+        for (int i = 0; i < res.length; i++) 
+            res[i] = Math.max(rightMax[i], leftMax[i+k-1]);
+        return res;
+    }
+}

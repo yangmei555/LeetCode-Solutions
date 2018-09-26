@@ -44,3 +44,21 @@ class Solution {
         return cur;
     }
 }
+
+
+class Solution {
+    public int deleteAndEarn(int[] nums) {
+        if (nums.length == 0)
+            return 0;
+        int max = 0;
+        for (int n : nums)
+            max = Math.max(max, n);
+        int[] count = new int[max + 1], dp = new int[max + 1];
+        for (int n : nums)
+            count[n]++;
+        dp[1] = count[1];
+        for (int i = 2; i < dp.length; i++)
+            dp[i] = Math.max(i * count[i] + dp[i-2], dp[i-1]);
+        return dp[max];
+    }
+}

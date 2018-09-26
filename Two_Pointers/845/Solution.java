@@ -19,3 +19,24 @@ class Solution {
         return res;
     }
 }
+
+
+// a more concise style 
+class Solution {
+    public int longestMountain(int[] A) {
+        int res = 0;
+        int index = 0;
+        while (index < A.length) {
+            int start = index++;
+            while (index < A.length && A[index-1] < A[index])
+                index++;
+            if (start + 1 == index || index == A.length || A[index-1] == A[index])
+                continue;
+            while (index < A.length && A[index-1] > A[index])
+                index++;
+            res = Math.max(res, index - start);
+            index--;
+        }
+        return res;
+    }
+}

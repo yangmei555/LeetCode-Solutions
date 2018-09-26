@@ -13,6 +13,7 @@ class Solution {
         for (int i = 0; i < points.length; i++) {
             Map<String, Integer> map = new HashMap<>();
             int dup = 0;
+            // if set j = i, it is also correct 
             for (int j = 0; j < points.length; j++) {
                 // pay attention to the duplicate points 
                 if (points[i].x == points[j].x && points[i].y == points[j].y) {

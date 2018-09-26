@@ -21,3 +21,41 @@ class Solution {
         return res;
     }
 }
+
+
+// traverse by tree map 
+class Solution {
+    public int carFleet(int target, int[] position, int[] speed) {
+        TreeMap<Integer, Double> map = new TreeMap<>();
+        for (int i = 0; i < position.length; i++) 
+            map.put(position[i], (target - position[i] + .0) / speed[i]);
+        int res = 0;
+        double max = 0;
+        for (int k : map.descendingKeySet()) {
+            if (map.get(k) > max) {
+                max = map.get(k);
+                res++;
+            }
+        }
+        return res;
+    }
+}
+
+
+// counting sort in O(n + target)  
+class Solution {
+    public int carFleet(int target, int[] position, int[] speed) {
+        double[] times = new double[target];
+        for (int i = 0; i < position.length; i++) 
+            times[position[i]] = (target - position[i] + .0) / speed[i];
+        int res = 0;
+        double max = 0;
+        for (int i = times.length-1; i >= 0; i--) {
+            if (times[i] > max) {
+                max = times[i];
+                res++;
+            }
+        }
+        return res;
+    }
+}
