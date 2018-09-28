@@ -21,3 +21,28 @@ class Solution {
         return res;
     }
 }
+
+
+// another approach which is symmetric to the above one 
+// sort the difficulty ascendingly 
+class Solution {
+    public int maxProfitAssignment(int[] difficulty, int[] profit, int[] worker) {
+        Integer[] indices = new Integer[profit.length];
+        for (int i = 0; i < profit.length; i++)
+            indices[i] = i;
+        Arrays.sort(indices, new Comparator<Integer>() {
+            public int compare(Integer i1, Integer i2) {
+                return difficulty[i1] - difficulty[i2];
+            }
+        });
+        Arrays.sort(worker);
+        int i = 0, j = 0, max = 0, res = 0;
+        while (i < worker.length) {
+            while (j < indices.length && difficulty[indices[j]] <= worker[i])
+                max = Math.max(max, profit[indices[j++]]);
+            res += max;
+            i++;
+        }
+        return res;
+    }
+}
