@@ -52,3 +52,27 @@ class Solution {
         return true;
     }
 }
+
+
+class Solution {
+    public boolean validWordSquare(List<String> words) {
+        int size = words.size();
+        if (words.get(0).length() != size)
+            return false;
+        for (int i = 1; i < size; i++) {
+            if (words.get(i).length() > size)
+                return false;
+            for (int j = 0; j < i; j++) {
+                if (j < words.get(i).length()) {
+                    if (words.get(j).length() <= i || 
+                        words.get(j).charAt(i) != words.get(i).charAt(j))
+                        return false;
+                } else {
+                    if (words.get(j).length() > i)
+                        return false;
+                }
+            }
+        }
+        return true;
+    }
+}
