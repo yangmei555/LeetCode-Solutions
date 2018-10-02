@@ -46,3 +46,27 @@ class Solution {
         return res;
     }
 }
+
+
+// somewhat like counting sort and dp mixture 
+class Solution {
+    public int maxProfitAssignment(int[] difficulty, int[] profit, int[] worker) {
+        int max = 0;
+        for (int d : difficulty)
+            max = Math.max(max, d);
+        int[] record = new int[max + 1];
+        // notice that there may be duplicate difficutly values 
+        for (int i = 0; i < difficulty.length; i++)
+            record[difficulty[i]] = Math.max(profit[i], record[difficulty[i]]);
+        for (int i = 1; i < record.length; i++)
+            record[i] = Math.max(record[i], record[i-1]);
+        int res = 0;
+        for (int w : worker) {
+            if (w > max)
+                res += record[max];
+            else
+                res += record[w];
+        }
+        return res;
+    }
+}

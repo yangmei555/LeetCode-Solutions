@@ -92,3 +92,43 @@ class Solution {
         return str;
     }
 }
+
+
+// using prefix tree 
+class Solution {
+    String res;
+    public String longestWord(String[] words) {
+        Node root = new Node();
+        res = "";
+        for (String str : words) {
+            char[] ch = str.toCharArray();
+            Node cur = root;
+            for (char c : ch) {
+                if (cur.nodes[c-'a'] == null)
+                    cur.nodes[c-'a'] = new Node();
+                cur = cur.nodes[c-'a'];
+            }
+            cur.end = true;
+        }
+        StringBuilder sb = new StringBuilder();
+        helper(root, sb);
+        return res;
+    }
+    
+    public void helper(Node node, StringBuilder sb) {
+        if (sb.length() > res.length())
+            res = sb.toString();
+        for (int i = 0; i < node.nodes.length; i++) {
+            if (node.nodes[i] != null && node.nodes[i].end) {
+                sb.append((char)('a' + i));
+                helper(node.nodes[i], sb);
+                sb.deleteCharAt(sb.length()-1);
+            }
+        }
+    }
+    
+    class Node {
+        Node[] nodes = new Node[26];
+        boolean end;
+    }
+}
