@@ -38,3 +38,43 @@ class Solution {
         return index[0];
     }
 }
+
+
+// using Trie 
+class Solution {
+    public boolean wordBreak(String s, List<String> wordDict) {
+        Node root = new Node();
+        for (String str : wordDict) {
+            Node cur = root;
+            for (char c : str.toCharArray()) {
+                if (cur.nodes[c-'a'] == null) 
+                    cur.nodes[c-'a'] = new Node();
+                cur = cur.nodes[c-'a'];
+            }
+            cur.end = true;
+        }
+        return helper(root, s.toCharArray(), 0, new boolean[s.length()]);
+    }
+    
+    public boolean helper(Node node, char[] ch, int index, boolean[] visited) {
+        if (index == ch.length)
+            return true;
+        if (visited[index])
+            return false;
+        Node cur = node;
+        for (int i = index; i < ch.length; i++) {
+            if (cur.nodes[ch[i]-'a'] == null)
+                break;
+            cur = cur.nodes[ch[i]-'a'];
+            if (cur.end && helper(node, ch, i+1, visited))
+                return true;
+        }
+        visited[index] = true;
+        return false;
+    }
+    
+    public class Node {
+        Node[] nodes = new Node[26];
+        boolean end;
+    }
+}

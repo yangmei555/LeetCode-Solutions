@@ -37,3 +37,27 @@ class Solution {
         }
     }
 }
+
+
+// DFS with adjacency matrix 
+class Solution {
+    public int findCircleNum(int[][] M) {
+        int res = 0;
+        boolean[] visited = new boolean[M.length];
+        for (int i = 0; i < M.length; i++) {
+            if (!visited[i]) {
+                helper(M, i, visited);
+                res++;
+            }
+        }
+        return res;
+    }
+    
+    public void helper(int[][] M, int node, boolean[] visited) {
+        visited[node] = true;
+        for (int j = 0; j < M.length; j++) {
+            if (M[node][j] == 1 && !visited[j])
+                helper(M, j, visited);
+        }
+    }
+}
