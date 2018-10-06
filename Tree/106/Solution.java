@@ -28,15 +28,7 @@ class Solution {
 }
 
 
-/**
- * Definition for a binary tree node.
- * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode(int x) { val = x; }
- * }
- */
+// 遇 stop 则返 
 class Solution {
     int inindex, postindex;
     public TreeNode buildTree(int[] inorder, int[] postorder) {
