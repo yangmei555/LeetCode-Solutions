@@ -49,3 +49,31 @@ class Solution {
         return root;
     }
 }
+
+
+// iterative version using stack 
+class Solution {
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
+        TreeNode[] stack = new TreeNode[preorder.length];
+        int index = 0;
+        TreeNode pre = null, root = null;
+        for (int i = 0, j = 0; i < preorder.length; i++) {
+            while (index > 0 && stack[index-1].val == inorder[j]) {
+                pre = stack[--index];
+                j++;
+            }
+            TreeNode node = new TreeNode(preorder[i]);
+            if (pre == null) {
+                if (root == null)
+                    root = node;
+                if (index != 0)
+                    stack[index-1].left = node;
+            } else {
+                pre.right = node;
+                pre = null;
+            }
+            stack[index++] = node;
+        }
+        return root;
+    }
+}

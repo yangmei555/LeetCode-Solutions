@@ -58,3 +58,46 @@ public class Codec {
 // Your Codec object will be instantiated and called as such:
 // Codec codec = new Codec();
 // codec.deserialize(codec.serialize(root));
+
+
+// DFS preorder traversal 
+public class Codec {
+
+    // Encodes a tree to a single string.
+    public String serialize(TreeNode root) {
+        return helper1(root);
+    }
+    
+    public String helper1(TreeNode root) {
+        if (root == null)
+            return "#";
+        StringBuilder sb = new StringBuilder();
+        sb.append(root.val).append(',');
+        sb.append(helper1(root.left)).append(',').append(helper1(root.right));
+        return sb.toString();
+    }
+    
+    int index;
+    
+    // Decodes your encoded data to tree.
+    public TreeNode deserialize(String data) {
+        String[] strs = data.split(",");
+        index = 0;
+        return helper2(strs);
+    }
+    
+    public TreeNode helper2(String[] strs) {
+        if (strs[index].equals("#")) {
+            index++;
+            return null;
+        }
+        TreeNode root = new TreeNode(Integer.parseInt(strs[index++]));
+        root.left = helper2(strs);
+        root.right = helper2(strs);
+        return root;
+    }
+}
+
+// Your Codec object will be instantiated and called as such:
+// Codec codec = new Codec();
+// codec.deserialize(codec.serialize(root));

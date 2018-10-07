@@ -78,3 +78,39 @@ class Solution {
         return res == Integer.MAX_VALUE ? -1 : res;
     }
 }
+
+
+// binary search 
+class Solution {
+    public int shortestSubarray(int[] A, int K) {
+        int[] prefix = new int[A.length+1];
+        for (int i = 0; i < A.length; i++)
+            prefix[i+1] = prefix[i] + A[i];
+        int left = 1, right = A.length+1;
+        while (left < right) {
+            int mid = (left + right) / 2;
+            if (helper(prefix, K, mid))
+                right = mid;
+            else
+                left = mid + 1;
+        }
+        return left == A.length + 1 ? -1 : left;
+    }
+    
+    public boolean helper(int[] prefix, int K, int len) {
+        int[] deque = new int[prefix.length];
+        int p1 = 0, p2 = 0, max = Integer.MIN_VALUE;
+        deque[p2++] = 0;
+        for (int i = 1; i < prefix.length; i++) {
+            max = Math.max(max, prefix[i] - prefix[deque[p1]]);
+            if (max >= K)
+                return true;
+            while (p1 != p2 && prefix[deque[p2-1]] >= prefix[i])
+                p2--;
+            deque[p2++] = i;
+            if (deque[p1] == i - len)
+                p1++;
+        }
+        return max >= K;
+    }
+}
