@@ -18,6 +18,7 @@ class Solution {
 
 
 // use array to implement Deque, gain high performance 
+// if K is allowed to be negative, the two while loops in the for loop should exchange 
 class Solution {
     public int shortestSubarray(int[] A, int K) {
         int[] prefix = new int[A.length+1];
