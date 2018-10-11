@@ -1,3 +1,4 @@
+// the famous "3 way partition" 
 class Solution {
     public void sortColors(int[] nums) {
         int front = -1, back = nums.length;
