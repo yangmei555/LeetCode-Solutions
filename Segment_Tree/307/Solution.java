@@ -147,3 +147,110 @@ class NumArray {
  * obj.update(i,val);
  * int param_2 = obj.sumRange(i,j);
  */
+
+
+// binay indexed tree ! 
+class NumArray {
+    
+    int[] nums, tree;
+    public NumArray(int[] nums) {
+        this.nums = new int[nums.length];
+        tree = new int[nums.length+1];
+        for (int i = 0; i < nums.length; i++)
+            update(i, nums[i]);
+    }
+    
+    public void update(int i, int val) {
+        int diff = val - nums[i];
+        nums[i] = val;
+        i++;
+        while (i < tree.length) {
+            tree[i] += diff;
+            i += (i & -i);
+        }
+    }
+    
+    public int sumRange(int i, int j) {
+        return getSum(j) - getSum(i-1);
+    }
+    
+    public int getSum(int i) {
+        i++;
+        int res = 0;
+        while (i > 0) {
+            res += tree[i];
+            i &= i-1;
+        }
+        return res;
+    }
+}
+
+/**
+ * Your NumArray object will be instantiated and called as such:
+ * NumArray obj = new NumArray(nums);
+ * obj.update(i,val);
+ * int param_2 = obj.sumRange(i,j);
+ */
+
+
+// binary indexed tree with only 1 additional array, add a "getSingle" method  
+class NumArray {
+    
+    int[] tree;
+    public NumArray(int[] nums) {
+        tree = new int[nums.length+1];
+
+        // // initialize in O(n*lgn)
+        // for (int i = 0; i < nums.length; i++)
+        //     update(i, nums[i]);
+
+        // initialize in O(n) 
+        for (int i = 0; i < nums.length; i++) {
+            tree[i+1] += nums[i];
+            int index = i+1 + (i+1 & (-i-1));
+            if (index < tree.length)
+                tree[index] += tree[i+1];
+        }
+    }
+    
+    public void update(int i, int val) {
+        int origin = getSingle(i);
+        int diff = val - origin;
+        i++;
+        while (i < tree.length) {
+            tree[i] += diff;
+            i += (i & -i);
+        }
+    }
+    
+    public int getSingle(int i) {
+        int res = tree[++i], index = (i & i-1);
+        i--;
+        while (i != index) {
+            res -= tree[i];
+            i &= i-1;
+        }
+        return res;
+    }
+    
+    public int sumRange(int i, int j) {
+        return getSum(j) - getSum(i-1);
+    }
+    
+    public int getSum(int i) {
+        i++;
+        int res = 0;
+        while (i > 0) {
+            res += tree[i];
+            i &= i-1;
+        }
+        return res;
+    }
+}
+
+/**
+ * Your NumArray object will be instantiated and called as such:
+ * NumArray obj = new NumArray(nums);
+ * obj.update(i,val);
+ * int param_2 = obj.sumRange(i,j);
+ */

@@ -102,3 +102,71 @@ class NumMatrix {
  * obj.update(row,col,val);
  * int param_2 = obj.sumRegion(row1,col1,row2,col2);
  */
+
+
+// binary indexed tree. 
+class NumMatrix {
+    int[][] tree, matrix;
+    public NumMatrix(int[][] matrix) {
+        if (matrix.length == 0 || matrix[0].length == 0)
+            return;
+        this.matrix = matrix;
+        tree = new int[matrix.length+1][matrix[0].length+1];
+
+        // notice how the tree is initialized in O(mn), rather than O(mnlog(m)log(n)) 
+        for (int i = 1; i < tree.length; i++) {
+            int[] temp = new int[matrix[0].length+1];
+            for (int j = 1; j < tree[0].length; j++) {
+                temp[j] += matrix[i-1][j-1];
+                if (j + (j & -j) < temp.length)
+                    temp[j+(j&-j)] += temp[j];
+                tree[i][j] += temp[j];
+                if (i + (i & -i) < tree.length)
+                    tree[i+(i&-i)][j] += tree[i][j];
+            }
+        }
+        // System.out.println(Arrays.deepToString(tree));
+    }
+    
+    public void update(int row, int col, int val) {
+        int diff = val - matrix[row][col];
+        matrix[row][col] = val;
+        row++;
+        col++;
+        while (row < tree.length) {
+            int c = col;
+            while (c < tree[0].length) {
+                tree[row][c] += diff;
+                c += (c & -c);
+            }
+            row += (row & -row);
+        }
+    }
+    
+    public int sumRegion(int row1, int col1, int row2, int col2) {
+        return getSum(row2, col2) - getSum(row2, col1-1) - getSum(row1-1, col2) + 
+                getSum(row1-1, col1-1);
+    }
+    
+    public int getSum(int i, int j) {
+        int sum = 0;
+        i++;
+        j++;
+        while (i != 0) {
+            int c = j;
+            while (c != 0) {
+                sum += tree[i][c];
+                c &= c-1;
+            }
+            i &= i-1;
+        }
+        return sum;
+    }
+}
+
+/**
+ * Your NumMatrix object will be instantiated and called as such:
+ * NumMatrix obj = new NumMatrix(matrix);
+ * obj.update(row,col,val);
+ * int param_2 = obj.sumRegion(row1,col1,row2,col2);
+ */
