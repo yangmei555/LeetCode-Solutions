@@ -53,3 +53,23 @@ class Solution {
         return index[A.length-1][K];
     }
 }
+
+
+// another style of writing 
+class Solution {
+    public double largestSumOfAverages(int[] A, int K) {
+        double[][] dp = new double[A.length+1][K+1];
+        for (int i = 1; i <= A.length; i++) {
+            dp[i][0] = Integer.MIN_VALUE;
+            for (int k = 1; k <= K && k <= i; k++) {
+                int sum = A[i-1];
+                for (int j = i-1; j >= 0 && j >= k-1; j--) {
+                    dp[i][k] = Math.max(dp[i][k], (sum+.0)/(i-j) + dp[j][k-1]);
+                    if (j != 0)
+                        sum += A[j-1];
+                }
+            }
+        }
+        return dp[A.length][K];
+    }
+}
