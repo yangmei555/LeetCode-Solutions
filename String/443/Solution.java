@@ -40,3 +40,22 @@ class Solution {
         return index > 0 ? index : 1;
     }
 }
+
+
+// a more concise style 
+class Solution {
+    public int compress(char[] chars) {
+        int index = 0, pos = 0;
+        while (pos < chars.length) {
+            int start = pos++;
+            while (pos < chars.length && chars[start] == chars[pos])
+                pos++;
+            chars[index++] = chars[start];
+            if (pos - start > 1) {
+                for (char c : (pos - start + "").toCharArray())
+                    chars[index++] = c;
+            } 
+        }
+        return index;
+    }
+}
