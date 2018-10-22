@@ -112,3 +112,31 @@ class Solution {
         return res;
     }
 }
+
+
+// this O(n^2) method is very fast when testing on the OJ 
+class Solution {
+    public List<Integer> fallingSquares(int[][] positions) {
+        int[] pos = new int[positions.length*2];
+        for (int i = 0; i < positions.length; i++) {
+            pos[i*2] = positions[i][0];
+            pos[i*2+1] = positions[i][0] + positions[i][1];
+        }
+        Arrays.sort(pos);
+        List<Integer> res = new LinkedList<>();
+        int[] heights = new int[pos.length];
+        int best = 0;
+        for (int[] p : positions) {
+            int start = p[0], end = p[0] + p[1];
+            int index = Arrays.binarySearch(pos, start);
+            int max = 0;
+            for (int i = index; pos[i] < end; i++)
+                max = Math.max(max, heights[i]);
+            best = Math.max(best, max + p[1]);
+            res.add(best);
+            for (int i = index; pos[i] < end; i++)
+                heights[i] = max + p[1];
+        }
+        return res;
+    }
+}

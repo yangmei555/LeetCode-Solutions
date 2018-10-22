@@ -44,6 +44,9 @@ class Solution {
         int[] tree = new int[nums.length+1];
         int[] rank = new int[nums.length];
         for (int i = 0; i < nums.length; i++) {
+            // note, for index1, if search for (nums[i] + t), and (nums[i] + t) is not 
+            // inside "nums" array, then the first value which is greater than (nums[i] + t) 
+            // will be included, but it should not. so we have to search for (nums[i] + t + 1) 
             int index1 = binarySearch(record, 0L + nums[i] + t + 1);
             int index2 = binarySearch(record, 0L + nums[i] - t);
             int sum1 = 0, sum2 = 0;
