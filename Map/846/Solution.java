@@ -39,7 +39,7 @@ class Solution {
             return false;
         Arrays.sort(hand);
         int[] nums = new int[hand.length], counts = new int[hand.length];
-        int index = 0, ptr = 0;;
+        int index = 0, ptr = 0;
         while (index < hand.length) {
             int start = index++;
             while (index < hand.length && hand[start] == hand[index])
@@ -62,5 +62,66 @@ class Solution {
             need = temp;
         }
         return need == counts[ptr-W];
+    }
+}
+
+
+// same solution with above but more compact 
+class Solution {
+    public boolean isNStraightHand(int[] hand, int W) {
+        if (hand.length % W != 0)
+            return false;
+        Arrays.sort(hand);
+        int[] nums = new int[hand.length], counts = new int[hand.length];
+        int index = 0, ptr = 0, need = 0;
+        while (index < hand.length) {
+            int start = index++;
+            while (index < hand.length && hand[start] == hand[index])
+                index++;
+            nums[ptr] = hand[start];
+            counts[ptr] = index - start;
+            if (ptr >= W)
+                need -= counts[ptr-W];
+            if (need != 0 && nums[ptr-1] + 1 != nums[ptr])
+                return false;
+            if (counts[ptr] < need)
+                return false;
+            int temp = counts[ptr];
+            counts[ptr] -= need;
+            need = temp;
+            ptr++;
+        }
+        return ptr >= W && need == counts[ptr-W];
+    }
+}
+
+
+// use buckets of size hand.length/W to store the values 
+class Solution {
+    public boolean isNStraightHand(int[] hand, int W) {
+        if (hand.length % W != 0)
+            return false;
+        int[][] record = new int[W][hand.length/W];
+        int[] ptrs = new int[W];
+        for (int h : hand) {
+            if (ptrs[h % W]++ == hand.length / W)
+                return false;
+            record[h % W][ptrs[h % W]-1] = h;
+        }
+        for (int[] r : record)
+            Arrays.sort(r);
+        for (int j = 0; j < hand.length / W; j++) {
+            boolean flag = false;
+            for (int i = 1; i < W; i++) {
+                if (record[i-1][j] + 1 == record[i][j]) {
+                    continue;
+                } else if (!flag && record[i-1][j] + 1 - W == record[i][j]) {
+                    flag = true;
+                } else {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }
