@@ -1,3 +1,4 @@
+// a verbose as well as strange as well as unclear method 
 class Solution {
     public int minRefuelStops(int target, int startFuel, int[][] stations) {
         Queue<Node> queue = new PriorityQueue<>(new Comparator<Node>() {
@@ -46,5 +47,29 @@ class Solution {
             this.station = station;
             this.stop = stop;
         }
+    }
+}
+
+
+// maxDist[i] : the max reachable distance with i stops 
+class Solution {
+    public int minRefuelStops(int target, int startFuel, int[][] stations) {
+        if (startFuel >= target)
+            return 0;
+        long[] maxDist = new long[stations.length+1];
+        maxDist[0] = startFuel;
+        int res = Integer.MAX_VALUE;
+        for (int i = 0; i < stations.length; i++) {
+            for (int j = i; j >= 0; j--) {
+                if (maxDist[j] >= stations[i][0]) {
+                    maxDist[j+1] = Math.max(maxDist[j+1], maxDist[j] + stations[i][1]);
+                    if (maxDist[j+1] >= target)
+                        res = Math.min(res, j+1);
+                } else {
+                    break;
+                }
+            }
+        }
+        return res == Integer.MAX_VALUE ? -1 : res;
     }
 }
