@@ -73,3 +73,26 @@ class Solution {
         return res == Integer.MAX_VALUE ? -1 : res;
     }
 }
+
+
+// priority queue, O(N * log N) 
+class Solution {
+    public int minRefuelStops(int target, int startFuel, int[][] stations) {
+        Queue<Integer> queue = new PriorityQueue<>();
+        int fuel = startFuel, last = 0, res = 0;
+        for (int i = 0; i <= stations.length; i++) {
+            fuel -= (i == stations.length ? target : stations[i][0]) - last;
+            while (!queue.isEmpty() && fuel < 0) {
+                fuel -= queue.poll();
+                res++;
+            }
+            if (fuel < 0)
+                return -1;
+            if (i != stations.length) {
+                queue.offer(-stations[i][1]);
+                last = stations[i][0];
+            }
+        }
+        return res;
+    }
+}
