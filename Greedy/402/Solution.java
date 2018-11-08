@@ -44,3 +44,26 @@ class Solution {
         return index == size ? "0" : String.valueOf(ch, index, size - index);
     }
 }
+
+
+class Solution {
+    public String removeKdigits(String num, int k) {
+        char[] ch = num.toCharArray();
+        int index = 0;
+        for (int i = 0; i < ch.length; i++) {
+            while (index != 0 && k != 0 && ch[index-1] > ch[i]) {
+                index--;
+                k--;
+            }
+            ch[index++] = ch[i];
+        }
+        index -= k;
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < index; i++) {
+            if (ch[i] == '0' && sb.length() == 0)
+                continue;
+            sb.append(ch[i]);
+        }
+        return sb.length() != 0 ? sb.toString() : "0";
+    }
+}
