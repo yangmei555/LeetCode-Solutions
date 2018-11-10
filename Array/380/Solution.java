@@ -10,7 +10,8 @@ class RandomizedSet {
         random = new Random(0);
     }
     
-    /** Inserts a value to the set. Returns true if the set did not already contain the specified element. */
+    /** Inserts a value to the set. 
+        Returns true if the set did not already contain the specified element. */
     public boolean insert(int val) {
         if (set.contains(val))
             return false;
@@ -19,7 +20,8 @@ class RandomizedSet {
         return true;
     }
     
-    /** Removes a value from the set. Returns true if the set contained the specified element. */
+    /** Removes a value from the set. 
+        Returns true if the set contained the specified element. */
     public boolean remove(int val) {
         if (!set.contains(val))
             return false;
@@ -57,7 +59,8 @@ class RandomizedSet {
         random = new Random(0);
     }
     
-    /** Inserts a value to the set. Returns true if the set did not already contain the specified element. */
+    /** Inserts a value to the set. 
+        Returns true if the set did not already contain the specified element. */
     public boolean insert(int val) {
         if (map1.containsKey(val))
             return false;
@@ -67,7 +70,8 @@ class RandomizedSet {
         return true;
     }
     
-    /** Removes a value from the set. Returns true if the set contained the specified element. */
+    /** Removes a value from the set. 
+        Returns true if the set contained the specified element. */
     public boolean remove(int val) {
         if (!map1.containsKey(val))
             return false;
@@ -111,7 +115,8 @@ class RandomizedSet {
         random = new Random(0);
     }
     
-    /** Inserts a value to the set. Returns true if the set did not already contain the specified element. */
+    /** Inserts a value to the set. 
+        Returns true if the set did not already contain the specified element. */
     public boolean insert(int val) {
         if (map.containsKey(val))
             return false;
@@ -121,7 +126,8 @@ class RandomizedSet {
         return true;
     }
     
-    /** Removes a value from the set. Returns true if the set contained the specified element. */
+    /** Removes a value from the set. 
+        Returns true if the set contained the specified element. */
     public boolean remove(int val) {
         if (!map.containsKey(val))
             return false;

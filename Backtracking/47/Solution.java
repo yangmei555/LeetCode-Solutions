@@ -136,3 +136,37 @@ class Solution {
         return list;
     }
 }
+
+
+// come up by myself , I think this is more time and space efficient than the above solutions 
+class Solution {
+    public List<List<Integer>> permuteUnique(int[] nums) {
+        // seems even no need to sort 
+        // Arrays.sort(nums);
+        List<List<Integer>> res = new LinkedList<>();
+        helper(nums, 0, res);
+        return res;
+    }
+    
+    public void helper(int[] nums, int index, List<List<Integer>> res) {
+        if (index == nums.length) {
+            List<Integer> temp = new LinkedList<>();
+            for (int n : nums)
+                temp.add(n);
+            res.add(temp);
+        } else {
+            int stop = nums[index];
+            for (int i = index; i >= 0; i--) {
+                if (i != index && nums[i] == stop) 
+                    break;
+                int temp = nums[i];
+                nums[i] = nums[index];
+                nums[index] = temp;
+                helper(nums, index+1, res);
+                temp = nums[i];
+                nums[i] = nums[index];
+                nums[index] = temp;
+            }
+        }
+    }
+}

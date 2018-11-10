@@ -143,3 +143,53 @@ class Solution {
         }
     }
 }
+
+
+// refer to the last solution of Problem 47 
+class Solution {
+    public List<String> generatePalindromes(String s) {
+        List<String> res = new LinkedList<>();
+        int[] map = new int[128];
+        for (char c : s.toCharArray())
+            map[c]++;
+        String odd = "";
+        StringBuilder half = new StringBuilder();
+        for (int i = 0; i < map.length; i++) {
+            if (map[i] % 2 == 1) {
+                if (odd.length() == 1)
+                    return res;
+                odd = (char)i + "";
+            } 
+            for (int j = 0; j < map[i] / 2; j++)
+                half.append((char)i);
+        }
+        helper(half.toString().toCharArray(), 0, odd, res);
+        return res;
+    }
+    
+    public void helper(char[] ch, int index, String odd, List<String> res) {
+        if (index == ch.length) {
+            StringBuilder sb = new StringBuilder();
+            for (char c : ch)
+                sb.append(c);
+            sb.append(odd);
+            while (--index >= 0)
+                sb.append(ch[index]);
+            res.add(sb.toString());
+        } else {
+            for (int i = index; i >= 0; i--) {
+                if (i != index && ch[i] == ch[index])
+                    break;
+                swap(ch, i, index);
+                helper(ch, index+1, odd, res);
+                swap(ch, i, index);
+            }
+        }
+    }
+    
+    public void swap(char[] ch, int i, int j) {
+        char temp = ch[i];
+        ch[i] = ch[j];
+        ch[j] = temp;
+    }
+}
