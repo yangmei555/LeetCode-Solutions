@@ -116,3 +116,40 @@ class Solution {
         }
     }
 }
+
+
+// another style of DFS searching, find each counter balance behind the current person and try 
+class Solution {
+    public int minTransfers(int[][] transactions) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int[] t : transactions) {
+            map.put(t[0], map.getOrDefault(t[0], 0) - t[2]);
+            map.put(t[1], map.getOrDefault(t[1], 0) + t[2]);
+            if (map.get(t[0]) == 0)
+                map.remove(t[0]);
+            if (map.get(t[1]) == 0)
+                map.remove(t[1]);
+        }
+        int[] balance = new int[map.size()];
+        int i = 0;
+        for (int k : map.keySet()) 
+            balance[i++] = map.get(k);
+        return helper(balance, 0);
+    }
+    
+    public int helper(int[] balance, int index) {
+        while (index < balance.length && balance[index] == 0)
+            index++;
+        if (index == balance.length)
+            return 0;
+        int res = Integer.MAX_VALUE;
+        for (int i = index+1; i < balance.length; i++) {
+            if (balance[index] * balance[i] < 0) {
+                balance[i] += balance[index];
+                res = Math.min(res, 1 + helper(balance, index+1));
+                balance[i] -= balance[index];
+            }
+        }
+        return res;
+    }
+}

@@ -65,6 +65,7 @@ class Solution {
 }
 
 
+// use 1D array to track pre and next is enough 
 class Solution {
     public int countPalindromicSubsequences(String S) {
         int mod = 1000000007;
