@@ -103,3 +103,39 @@ class Solution {
         return res[0] + "" + res[1] + ":" + res[2] + "" + res[3];
     }
 }
+
+
+class Solution {
+    public String nextClosestTime(String time) {
+        char[] ch = new char[4];
+        for (int i = 0; i < ch.length; i++)
+            ch[i] = time.charAt(i + i/2);
+        char globalMin = Character.MAX_VALUE;
+        for (char c : ch)
+            globalMin = (char)Math.min(globalMin, c);
+        for (int i = ch.length-1; i >= 0; i--) {
+            char min = Character.MAX_VALUE;
+            for (char c : ch) {
+                if (c > ch[i])
+                    min = (char)Math.min(min, c);
+            }
+            if (min == Character.MAX_VALUE)
+                continue;
+            if (i == 2 && min > '5')
+                continue;
+            if (i == 1 && ch[0] == '2' && min > '3')
+                continue;
+            if (i == 0 && min > '2')
+                continue;
+            ch[i] = min;
+            for (int j = i+1; j < ch.length; j++)
+                ch[j] = globalMin;
+            StringBuilder sb = new StringBuilder();
+            sb.append(ch[0]).append(ch[1]).append(':').append(ch[2]).append(ch[3]);
+            return sb.toString();
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append(globalMin).append(globalMin).append(':').append(globalMin).append(globalMin);
+        return sb.toString();
+    }
+}

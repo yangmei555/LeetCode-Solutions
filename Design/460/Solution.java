@@ -85,12 +85,86 @@ class LFUCache {
     }
 }
 
-/**
- * Your LFUCache object will be instantiated and called as such:
- * LFUCache obj = new LFUCache(capacity);
- * int param_1 = obj.get(key);
- * obj.put(key,value);
- */
+
+// another style of using doubly linked list 
+class LFUCache {
+    
+    Map<Integer, int[]> map;
+    Map<Integer, Node> freqSets;
+    int size;
+    Node head, tail;
+    public LFUCache(int capacity) {
+        size = capacity;
+        map = new HashMap<>();
+        freqSets = new HashMap<>();
+        head = new Node(0);
+        tail = new Node(0);
+        head.next = tail;
+        tail.prev = head;
+    }
+    
+    public int get(int key) {
+        if (!map.containsKey(key))
+            return -1;
+        int[] valuePair = map.get(key);
+        Node node = freqSets.get(valuePair[1]);
+        node.set.remove(key);
+        valuePair[1]++;
+        insertBehindNode(node, valuePair[1]);
+        node.next.set.add(key);
+        if (node.set.isEmpty())
+            removeNode(node);
+        return valuePair[0];
+    }
+    
+    public void put(int key, int value) {
+        if (size == 0)
+            return;
+        if (!map.containsKey(key)) {
+            if (map.size() == size) {
+                int evict = head.next.set.iterator().next();
+                head.next.set.remove(evict);
+                if (head.next.set.isEmpty())
+                    removeNode(head.next);
+                map.remove(evict);
+            }
+            insertBehindNode(head, 1);
+            head.next.set.add(key);
+            map.put(key, new int[]{value, 1});
+        } else {
+            get(key);
+            int[] valuePair = map.get(key);
+            valuePair[0] = value;
+        }
+    }
+    
+    public void insertBehindNode(Node node, int val) {
+        if (node.next.freq != val) {
+            Node newNode = new Node(val);
+            freqSets.put(val, newNode);
+            newNode.next = node.next;
+            newNode.next.prev = newNode;
+            newNode.prev = node;
+            node.next = newNode;
+        }
+    }
+    
+    public void removeNode(Node node) {
+        node.prev.next = node.next;
+        node.next.prev = node.prev;
+        freqSets.remove(node.freq);
+    }
+    
+    class Node {
+        int freq;
+        Node prev, next;
+        Set<Integer> set;
+        public Node(int freq) {
+            this.freq = freq;
+            set = new LinkedHashSet<>();
+        }
+    }
+}
 
 
 // add 1 freq set first !!! 
@@ -141,10 +215,3 @@ class LFUCache {
         }
     }
 }
-
-/**
- * Your LFUCache object will be instantiated and called as such:
- * LFUCache obj = new LFUCache(capacity);
- * int param_1 = obj.get(key);
- * obj.put(key,value);
- */
