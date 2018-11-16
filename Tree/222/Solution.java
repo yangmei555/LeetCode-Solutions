@@ -102,3 +102,35 @@ class Solution {
         return res;
     }
 }
+
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public int countNodes(TreeNode root) {
+        int res = 0;
+        TreeNode node = root;
+        while (node != null) {
+            TreeNode left = node.left, right = node.left;
+            int height = 0;
+            while (left != null && right != null) {
+                left = left.left;
+                right = right.right;
+                height++;
+            }
+            res += 1 << height;
+            if (left == null && right == null) 
+                node = node.right;
+            else 
+                node = node.left;
+        }
+        return res;
+    }
+}
