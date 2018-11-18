@@ -11,9 +11,9 @@ class Solution {
                 operand.push(num);
                 num = 0;
                 while (!operator.isEmpty() && priority(operator.peek()) >= priority(ch[i])) {
-                    System.out.println(operand);
-                    System.out.println(operator);
-                    System.out.println(ch[i]);
+                    // System.out.println(operand);
+                    // System.out.println(operator);
+                    // System.out.println(ch[i]);
                     char o = operator.pop();
                     int n1 = operand.pop(), n2 = operand.pop();
                     int n3 = 0;
@@ -31,7 +31,7 @@ class Solution {
             }
         }
         operand.push(num);
-        System.out.println(operand.size() + " " + operator.size());
+        // System.out.println(operand.size() + " " + operator.size());
         while (!operator.isEmpty()) {
             char o = operator.pop();
             int n1 = operand.pop(), n2 = operand.pop();
