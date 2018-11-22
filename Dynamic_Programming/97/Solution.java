@@ -73,3 +73,32 @@ class Solution {
         return false;
     }
 }
+
+
+// only need to record those indices which returns false, because once it returns true, 
+// the calling function will return true, level by level 
+class Solution {
+    public boolean isInterleave(String s1, String s2, String s3) {
+        char[] ch1 = s1.toCharArray(), ch2 = s2.toCharArray(), ch3 = s3.toCharArray();
+        if (ch1.length + ch2.length != ch3.length)
+            return false;
+        boolean[][] dp = new boolean[ch1.length+1][ch2.length+1];
+        return helper(ch1, ch2, ch3, ch1.length-1, ch2.length-1, dp);
+    }
+    
+    public boolean helper(char[] ch1, char[] ch2, char[] ch3, int index1, int index2, 
+                                                                            boolean[][] dp) {
+        if (index1 == -1 && index2 == -1)
+            return true;
+        if (dp[index1+1][index2+1]) 
+            return false;
+        if (index1 != -1 && ch1[index1] == ch3[index1+index2+1] && 
+                                helper(ch1, ch2, ch3, index1-1, index2, dp)) 
+            return true;
+        if (index2 != -1 && ch2[index2] == ch3[index1+index2+1] && 
+                                helper(ch1, ch2, ch3, index1, index2-1, dp))
+            return true;
+        dp[index1+1][index2+1] = true;
+        return false;
+    }
+}

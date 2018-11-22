@@ -80,3 +80,32 @@ class Solution {
         return sb.toString();
     }
 }
+
+
+// 'ch' and 'stack' can point to the same area of memory , thus O(1) space 
+class Solution {
+    public String simplifyPath(String path) {
+        char[] ch = path.toCharArray();
+        char[] stack = new char[ch.length];
+        int stackIndex = 0, index = 0;
+        while (index < ch.length) {
+            int start = index++;
+            while (index < ch.length && ch[index] != '/')
+                index++;
+            if (index - start == 1)
+                continue;
+            if (index - start == 2 && ch[start+1] == '.')
+                continue;
+            if (index - start == 3 && ch[start+1] == '.' && ch[start+2] == '.') {
+                while (stackIndex > 0 && stack[stackIndex-1] != '/')
+                    stackIndex--;
+                if (stackIndex != 0)
+                    stackIndex--;
+                continue;
+            }
+            while (start < index)
+                stack[stackIndex++] = ch[start++];
+        }
+        return stackIndex == 0 ? "/" : new String(stack, 0, stackIndex);
+    }
+}

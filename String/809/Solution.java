@@ -63,3 +63,39 @@ class Solution {
         return res;
     }
 }
+
+
+class Solution {
+    public int expressiveWords(String S, String[] words) {
+        int res = 0;
+        char[] ch = S.toCharArray();
+        for (String word : words) {
+            char[] w = word.toCharArray();
+            int index1 = 0, index2 = 0;
+            boolean flag = true;
+            while (index1 < ch.length && index2 < w.length) {
+                int start1 = index1++, start2 = index2++;
+                while (index1 < ch.length && ch[start1] == ch[index1])
+                    index1++;
+                while (index2 < w.length && w[start2] == w[index2])
+                    index2++;
+                if (ch[start1] == w[start2]) {
+                    if (index1 - start1 == index2 - start2)
+                        continue;
+                    if (index1 - start1 > index2 - start2 && index1 - start1 >= 3)
+                        continue;
+                    else {
+                        flag = false;
+                        break;
+                    }
+                } else {
+                    flag = false;
+                    break;
+                }
+            }
+            if (flag && index1 == ch.length && index2 == w.length)
+                res++;
+        }
+        return res;
+    }
+}

@@ -22,6 +22,7 @@ class Solution {
     }
 }
 
+
 /**
  * Definition for singly-linked list.
  * public class ListNode {
