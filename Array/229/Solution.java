@@ -20,7 +20,7 @@ class Solution {
                 count2--;
             }
         }
-        System.out.println(cand1 + " " + cand2);
+        // System.out.println(cand1 + " " + cand2);
         count1 = count2 = 0;
         for (int n : nums) {
             if (n == cand1)

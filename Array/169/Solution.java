@@ -6,7 +6,7 @@ class Solution {
                 count++;
             else {
                 count--;
-                if (count == 0) {
+                if (count == 0) {      // 'if (count < 0)' also works 
                     cand = n;
                     count = 1;
                 }

@@ -81,7 +81,7 @@ class Solution {
 }
 
 
-// use bucket to classify the values. O(1) solution 
+// use bucket to classify the values. O(n) solution 
 class Solution {
     public boolean containsNearbyAlmostDuplicate(int[] nums, int k, int t) {
         if (t < 0)

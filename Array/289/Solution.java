@@ -33,3 +33,43 @@ class Solution {
         return;
     }
 }
+
+
+class Solution {
+    public void gameOfLife(int[][] board) {
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+                int neighbour = getNeighbour(board, i, j);
+                if (board[i][j] == 1)
+                    board[i][j] = neighbour+1;
+                else
+                    board[i][j] = -neighbour-1;
+            }
+        }
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+                if (board[i][j] == 3 || board[i][j] == 4 || board[i][j] == -4)
+                    board[i][j] = 1;
+                else
+                    board[i][j] = 0;
+            }
+        }
+    }
+    
+    public int getNeighbour(int[][] board, int r, int c) {
+        int res = 0;
+        for (int i = r-1; i <= r+1; i++) {
+            if (i < 0 || i == board.length)
+                continue;
+            for (int j = c-1; j <= c+1; j++) {
+                if (j < 0 || j == board[i].length)
+                    continue;
+                if (i == r && j == c)
+                    continue;
+                if (board[i][j] > 0)
+                    res++;
+            }
+        }
+        return res;
+    }
+}
