@@ -16,7 +16,7 @@ class Solution {
 }
 
 
-// use KarNot map to get the expression
+// use Karnaugh map to get the expression
 class Solution {
     public int singleNumber(int[] nums) {
         int a = 0, b = 0;

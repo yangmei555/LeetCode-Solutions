@@ -87,3 +87,47 @@ class Solution {
         return res;
     }
 }
+
+
+// use the '0' grids to store the counts directly, but this is not 100% safe, 
+// since the counts may equal to 'W' or 'E' 
+class Solution {
+    public int maxKilledEnemies(char[][] grid) {
+        if (grid.length == 0 || grid[0].length == 0)
+            return 0;
+        int[] cols = new int[grid[0].length];
+        for (int i = 0; i < grid.length; i++) {
+            int count = 0;
+            for (int j = 0; j < grid[0].length; j++) {
+                if (grid[i][j] == 'W') {
+                    count = 0;
+                    cols[j] = 0;
+                } else if (grid[i][j] == 'E') {
+                    count++;
+                    cols[j]++;
+                } else {
+                    grid[i][j] = 0;
+                    grid[i][j] += count + cols[j];
+                }
+            }
+        }
+        Arrays.fill(cols, 0);
+        int res = 0;
+        for (int i = grid.length-1; i >= 0; i--) {
+            int count = 0;
+            for (int j = grid[0].length-1; j >= 0; j--) {
+                if (grid[i][j] == 'W') {
+                    count = 0;
+                    cols[j] = 0;
+                } else if (grid[i][j] == 'E') {
+                    count++;
+                    cols[j]++;
+                } else {
+                    grid[i][j] += count + cols[j];
+                    res = Math.max(res, grid[i][j]);
+                }
+            }
+        }
+        return res;
+    }
+}
