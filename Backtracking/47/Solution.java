@@ -170,3 +170,37 @@ class Solution {
         }
     }
 }
+
+
+// using a hashset, most straight forward 
+class Solution {
+    public List<List<Integer>> permuteUnique(int[] nums) {
+        List<List<Integer>> res = new LinkedList<>();
+        helper(nums, 0, res);
+        return res;
+    }
+    
+    public void helper(int[] nums, int index, List<List<Integer>> res) {
+        if (index == nums.length-1) {
+            List<Integer> list = new LinkedList<>();
+            for (int n : nums)
+                list.add(n);
+            res.add(list);
+        } else {
+            Set<Integer> visited = new HashSet<>();
+            for (int i = index; i < nums.length; i++) {
+                if (visited.add(nums[i])) {
+                    swap(nums, i, index);
+                    helper(nums, index+1, res);
+                    swap(nums, i, index);
+                }
+            }
+        }
+    }
+    
+    public void swap(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+}

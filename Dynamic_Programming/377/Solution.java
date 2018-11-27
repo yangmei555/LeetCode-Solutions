@@ -36,3 +36,20 @@ class Solution {
         return res;
     }
 }
+
+
+// a verbose solution 
+class Solution {
+    public int combinationSum4(int[] nums, int target) {
+        int[][] dp = new int[target+1][nums.length+1];
+        dp[0][0] = 1;
+        for (int t = 0; t <= target; t++) {
+            for (int i = 0; i < nums.length; i++) {
+                dp[t][i+1] = dp[t][i];
+                if (t >= nums[i])
+                    dp[t][i+1] += dp[t-nums[i]][nums.length];
+            }
+        }
+        return dp[target][nums.length];
+    }
+}

@@ -39,3 +39,24 @@ class Solution {
         return res;
     }
 }
+
+
+class Solution {
+    public List<List<Integer>> subsets(int[] nums) {
+        List<List<Integer>> res = new LinkedList<>();
+        List<Integer> temp = new LinkedList<>();
+        helper(nums, 0, res, temp);
+        return res;
+    }
+    
+    public void helper(int[] nums, int index, List<List<Integer>> res, List<Integer> temp) {
+        if (index == nums.length) {
+            res.add(new LinkedList<>(temp));
+        } else {
+            helper(nums, index+1, res, temp);
+            temp.add(nums[index]);
+            helper(nums, index+1, res, temp);
+            temp.remove(temp.size()-1);
+        }
+    }
+}

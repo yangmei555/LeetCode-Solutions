@@ -76,7 +76,7 @@ class Solution {
 }
 
 
-// using deque, convex hell, but do not fully understand yet 
+// using deque, convex hull, but do not fully understand yet 
 // view the average as slopes 
 class Solution {
     public double findMaxAverage(int[] nums, int k) {
