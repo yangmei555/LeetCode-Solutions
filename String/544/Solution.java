@@ -98,3 +98,25 @@ class Solution {
         return "(" + helper(res, left, mid, n) + "," + helper(res, mid+1, right, n) + ")";
     }
 }
+
+
+class Solution {
+    public String findContestMatch(int n) {
+        int[] teams = new int[n];
+        teams[0] = 1;
+        for (int i = 1; i < n; i++) {
+            int prev = i & (i-1);
+            teams[i] = n / (i - prev) + 1 - teams[prev];
+        }
+        return helper(teams, 0, n-1);
+    }
+    
+    public String helper(int[] teams, int left, int right) {
+        if (left == right) {
+            return teams[left] + "";
+        } else {
+            int mid = (left + right) / 2;
+            return "(" + helper(teams, left, mid) + "," + helper(teams, mid+1, right) + ")";
+        }
+    }
+}

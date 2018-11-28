@@ -138,3 +138,35 @@ class Solution {
         return cand;
     }
 }
+
+
+// a very bad approach, sometimes can pass the judge sometimes can not 
+class Solution {
+    Random random = new Random();
+    public void findSecretWord(String[] wordlist, Master master) {
+        List<String> cand = new LinkedList<>();
+        for (String word : wordlist)
+            cand.add(word);
+        while (true) {
+            int index = random.nextInt(cand.size());
+            int ret = master.guess(cand.get(index));
+            if (ret == 6)
+                break;
+            cand = helper(cand, cand.get(index), ret);
+        }
+    }
+    
+    public List<String> helper(List<String> cand, String str, int count) {
+        List<String> res = new LinkedList<>();
+        for (String word : cand) {
+            int match = 0;
+            for (int i = 0; i < word.length(); i++) {
+                if (word.charAt(i) == str.charAt(i))
+                    match++;
+            }
+            if (match == count)
+                res.add(word);
+        }
+        return res;
+    }
+}
