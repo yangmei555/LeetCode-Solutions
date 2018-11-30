@@ -115,3 +115,29 @@ class Solution {
         return sell;
     }
 }
+
+
+// if do not deal with the special case (k >= prices.length/2) seperately, it will become very 
+// very slow 
+class Solution {
+    public int maxProfit(int k, int[] prices) {
+        if (k == 0)
+            return 0;
+        if (k >= prices.length/2) {
+            int res = 0;
+            for (int i = 1; i < prices.length; i++)
+                res += Math.max(0, prices[i] - prices[i-1]);
+            return res;
+        }
+        int[][] dp = new int[k][2];
+        for (int i = 0; i < k; i++)
+            dp[i][0] = Integer.MIN_VALUE;
+        for (int p : prices) {
+            for (int i = k-1; i >= 0; i--) {
+                dp[i][1] = Math.max(dp[i][1], dp[i][0] + p);
+                dp[i][0] = Math.max(dp[i][0], (i == 0 ? 0 : dp[i-1][1]) - p);
+            }
+        }
+        return dp[k-1][1];
+    }
+}

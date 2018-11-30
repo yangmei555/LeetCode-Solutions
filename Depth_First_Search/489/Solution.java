@@ -88,3 +88,46 @@ class Solution {
         }
     }
 }
+
+
+// notice that the order of the dir pair matters 
+class Solution {
+    int[][] dir = new int[][]{{0, 1}, {-1, 0}, {0, -1}, {1, 0}};
+    public void cleanRoom(Robot robot) {
+        Set<Point> visited = new HashSet<>();
+        helper(robot, 0, 0, 0, visited);
+    }
+    
+    public void helper(Robot robot, int x, int y, int inDir, Set<Point> visited) {
+        visited.add(new Point(x, y));
+        robot.clean();
+        for (int i = 0; i < dir.length; i++) {
+            int nextDir = (inDir + i) % dir.length;
+            int nextX = x + dir[nextDir][0], nextY = y + dir[nextDir][1];
+            if (!visited.contains(new Point(nextX, nextY)) && robot.move()) {
+                helper(robot, nextX, nextY, nextDir, visited);
+            }
+            robot.turnLeft();
+        }
+        robot.turnLeft();
+        robot.turnLeft();
+        robot.move();
+        robot.turnLeft();
+        robot.turnLeft();
+    }
+    
+    class Point {
+        int x, y;
+        public Point(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+        public int hashCode() {
+            return 31 * x + y;
+        }
+        public boolean equals(Object obj) {
+            Point p = (Point)obj;
+            return x == p.x && y == p.y;
+        }
+    }
+}

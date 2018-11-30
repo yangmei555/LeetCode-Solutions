@@ -31,3 +31,28 @@ class Solution {
     }
 }
 
+
+class Solution {
+    public int maxProfit(int[] prices) {
+        int index = 0, res = 0;
+        while (index < prices.length) {
+            int start = index++;
+            while (index < prices.length && prices[index-1] <= prices[index])
+                index++;
+            res += prices[index-1] - prices[start];
+        }
+        return res;
+    }
+}
+
+
+class Solution {
+    public int maxProfit(int[] prices) {
+        int res = 0;
+        for (int i = 1; i < prices.length; i++) {
+            if (prices[i-1] < prices[i])
+                res += prices[i] - prices[i-1];
+        }
+        return res;
+    }
+}

@@ -61,3 +61,21 @@ class Solution {
         return sell2;
     }
 }
+
+
+// if require exactly two transactions 
+class Solution {
+    public int maxProfit(int[] prices) {
+        int buy1 = Integer.MIN_VALUE, sell1 = 0, buy2 = Integer.MIN_VALUE, sell2 = 0;
+        for (int i = 0; i < prices.length; i++) {
+            int p = prices[i];
+            if (i >= 2) {           // only when i >= 2, the second buy and sell will have meaning 
+                sell2 = Math.max(sell2, buy2 + p);
+                buy2 = Math.max(buy2, sell1 - p);
+            }
+            sell1 = Math.max(sell1, buy1 + p);
+            buy1 = Math.max(buy1, -p);
+        }
+        return Math.max(sell1, sell2);
+    }
+}
