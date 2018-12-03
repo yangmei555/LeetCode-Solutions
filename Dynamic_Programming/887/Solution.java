@@ -85,3 +85,56 @@ class Solution {
         }
     }
 }
+
+
+// fantastic idea, do dp based on detecting how many floors at most with res trials and k eggs. 
+// essentially similar to the above binary search idea, both have time complexity O(K*logN). 
+// according to hackerrank, if you resolve the analytical expression of the dp recurrence, 
+// you will get a series of binomial coefficients just like what's in the helper function 
+// above 
+class Solution {
+    public int superEggDrop(int K, int N) {
+        int[][] dp = new int[N+1][K+1];
+        int res = 0;
+        while (dp[res][K] < N) {
+            res++;
+            for (int k = 1; k <= K; k++)
+                dp[res][k] = dp[res-1][k-1] + dp[res-1][k] + 1;
+        }
+        return res;
+    }
+}
+
+
+// 1-d version of the above idea 
+class Solution {
+    public int superEggDrop(int K, int N) {
+        int[] dp = new int[K+1];
+        int res = 0;
+        while (dp[K] < N) {
+            res++;
+            int temp1 = dp[0], temp2 = 0;
+            for (int k = 1; k <= K; k++) {
+                temp2 = dp[k];
+                dp[k] = temp1 + dp[k] + 1;
+                temp1 = temp2;
+            }
+        }
+        return res;
+    }
+}
+
+
+// another better 1-d version, traverse from back to front so no need to use temp variables 
+class Solution {
+    public int superEggDrop(int K, int N) {
+        int[] dp = new int[K+1];
+        int res = 0;
+        while (dp[K] < N) {
+            res++;
+            for (int k = K; k >= 1; k--) 
+                dp[k] = dp[k-1] + dp[k] + 1;
+        }
+        return res;
+    }
+}

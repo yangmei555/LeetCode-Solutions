@@ -54,3 +54,35 @@ class Solution {
         return dp[0][ch.length-1];
     }
 }
+
+
+// seems quite straight forward but I somehow can not find it myself... 
+class Solution {
+    public int strangePrinter(String s) {
+        StringBuilder sb = new StringBuilder();
+        char[] ch = s.toCharArray();
+        for (int i = 0; i < ch.length; i++) {
+            if (i == 0 || ch[i-1] != ch[i])
+                sb.append(ch[i]);
+        }
+        ch = sb.toString().toCharArray();
+        int[][] memo = new int[ch.length][ch.length];
+        return helper(ch, 0, ch.length-1, memo);
+    }
+    
+    public int helper(char[] ch, int left, int right, int[][] memo) {
+        if (left > right)
+            return 0;
+        if (memo[left][right] != 0)
+            return memo[left][right];
+        int res = helper(ch, left, right-1, memo) + 1;
+        for (int i = left; i < right; i++) {
+            if (ch[i] == ch[right]) {
+                int ret = helper(ch, left, i, memo) + helper(ch, i+1, right-1, memo);
+                res = Math.min(res, ret);
+            }
+        }
+        memo[left][right] = res;
+        return res;
+    }
+}
