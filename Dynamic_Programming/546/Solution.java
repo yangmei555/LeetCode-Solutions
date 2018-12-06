@@ -106,3 +106,24 @@ class Solution {
         return res;
     }
 }
+
+
+// a bottom up version of the above solution 
+class Solution {
+    public int removeBoxes(int[] boxes) {
+        int[][][] dp = new int[boxes.length][boxes.length][boxes.length];
+        for (int j = 0; j < dp.length; j++) {
+            for (int i = j; i >= 0; i--) {
+                for (int k = 0; k < boxes.length - j; k++) {
+                    dp[i][j][k] = (j == 0 ? 0 : dp[i][j-1][0]) + (1 + k) * (1 + k);
+                    for (int b = i; b < j; b++) {
+                        if (boxes[b] == boxes[j]) {
+                            dp[i][j][k] = Math.max(dp[i][j][k], dp[i][b][1+k] + dp[b+1][j-1][0]);
+                        }
+                    }
+                }
+            }
+        }
+        return dp[0][boxes.length-1][0];
+    }
+}

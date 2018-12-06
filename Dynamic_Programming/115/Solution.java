@@ -173,3 +173,19 @@ class Solution {
         return dp[ch2.length];
     }
 }
+
+
+class Solution {
+    public int numDistinct(String s, String t) {
+        char[] ch1 = s.toCharArray(), ch2 = t.toCharArray();
+        int[] dp = new int[ch2.length+1];
+        dp[0] = 1;
+        for (int i = 0; i < ch1.length; i++) {
+            for (int j = Math.min(i, ch2.length-1); j >= 0; j--) {
+                if (ch1[i] == ch2[j])
+                    dp[j+1] += dp[j];
+            }
+        }
+        return dp[ch2.length];
+    }
+}

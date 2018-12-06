@@ -56,6 +56,7 @@ class Solution {
 }
 
 
+// just decide the last character is printed with which character at the same time 
 // seems quite straight forward but I somehow can not find it myself... 
 class Solution {
     public int strangePrinter(String s) {
@@ -84,5 +85,36 @@ class Solution {
         }
         memo[left][right] = res;
         return res;
+    }
+}
+
+
+// bottom up version of the above solution 
+class Solution {
+    public int strangePrinter(String s) {
+        if (s.length() == 0)
+            return 0;
+        StringBuilder sb = new StringBuilder();
+        char[] ch = s.toCharArray();
+        for (int i = 0; i < ch.length; i++) {
+            if (i == 0 || ch[i-1] != ch[i])
+                sb.append(ch[i]);
+        }
+        ch = sb.toString().toCharArray();
+        int[][] dp = new int[ch.length][ch.length];
+        for (int j = 0; j < ch.length; j++) {
+            for (int i = j; i >= 0; i--) {
+                if (i == j) {
+                    dp[i][j] = 1;
+                } else {
+                    dp[i][j] = dp[i][j-1] + 1;
+                    for (int k = i; k < j; k++) {
+                        if (ch[k] == ch[j])
+                            dp[i][j] = Math.min(dp[i][j], dp[i][k] + dp[k+1][j-1]);
+                    }
+                }
+            }
+        }
+        return dp[0][ch.length-1];
     }
 }

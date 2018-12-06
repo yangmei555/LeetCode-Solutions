@@ -115,3 +115,34 @@ class Solution {
         return W;
     }
 }
+
+
+// actually same idea with above but a different style of looping 
+class Solution {
+    public int findMaximizedCapital(int k, int W, int[] Profits, int[] Capital) {
+        Integer[] indices = new Integer[Profits.length];
+        for (int i = 0; i < indices.length; i++)
+            indices[i] = i;
+        Arrays.sort(indices, new Comparator<Integer>() {
+            public int compare(Integer i1, Integer i2) {
+                return Capital[i1] - Capital[i2];
+            }
+        });
+        Queue<Integer> queue = new PriorityQueue<>();
+        for (int i = 0; i < indices.length; i++) {
+            int p = Profits[indices[i]], c = Capital[indices[i]];
+            while (W < c && !queue.isEmpty() && k != 0) {
+                W -= queue.poll();
+                k--;
+            }
+            if (W < c || k == 0)
+                break;
+            queue.offer(-p);
+        }
+        while (k != 0 && !queue.isEmpty()) {
+            W -= queue.poll();
+            k--;
+        }
+        return W;
+    }
+}

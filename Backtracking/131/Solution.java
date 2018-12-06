@@ -160,3 +160,48 @@ class Solution {
         }
     }
 }
+
+
+// actually, we need to do a memoization here, even if it is slower than not doing memoization. 
+// because there will be lots of duplicate visits to each single index 
+class Solution {
+    public List<List<String>> partition(String s) {
+        char[] ch = s.toCharArray();
+        boolean[][] decide = new boolean[ch.length][ch.length];
+        setboolean(ch, decide);
+        return helper(s, ch, 0, decide, new List[ch.length]);
+    }
+    
+    public List<List<String>> helper(String str, char[] ch, int index, boolean[][] decide, 
+                                                                List<List<String>>[] memo) {
+        if (index == ch.length) {
+            List<List<String>> res = new LinkedList<>();
+            res.add(new LinkedList<>());
+            return res;
+        } else {
+            if (memo[index] != null)
+                return memo[index];
+            List<List<String>> res = new LinkedList<>();
+            for (int i = index; i < ch.length; i++) {
+                if (decide[index][i]) {
+                    String sub = str.substring(index, i+1);
+                    for (List<String> list : helper(str, ch, i+1, decide, memo)) {
+                        List<String> temp = new LinkedList<>(list);
+                        temp.add(0, sub);
+                        res.add(temp);
+                    }
+                }
+            }
+            memo[index] = res;
+            return res;
+        }
+    }
+    
+    public void setboolean(char[] ch, boolean[][] decide) {
+        for (int j = 0; j < ch.length; j++) {
+            for (int i = 0; i <= j; i++) {
+                decide[i][j] = ch[i] == ch[j] && (j-i <= 1 || decide[i+1][j-1]);
+            }
+        }
+    }
+}
