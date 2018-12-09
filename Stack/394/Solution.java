@@ -26,3 +26,42 @@ class Solution {
         return sb.toString();
     }
 }
+
+
+// a cumbersome method using stack 
+class Solution {
+    public String decodeString(String s) {
+        char[] ch = s.toCharArray();
+        String[] stringStack = new String[ch.length];
+        int[] numStack = new int[ch.length];
+        StringBuilder sb = new StringBuilder();
+        int index = 0, stringStackIndex = 0, numStackIndex = 0;
+        while (index < ch.length) {
+            if (ch[index] >= '0' && ch[index] <= '9') {
+                int num = 0;
+                while (index < ch.length && ch[index] >= '0' && ch[index] <= '9')
+                    num = num * 10 + ch[index++] - '0';
+                if (index < ch.length && ch[index] == '[') {
+                    index++;
+                    stringStack[stringStackIndex++] = sb.toString();
+                    sb.setLength(0);
+                    numStack[numStackIndex++] = num;
+                }
+            } else if (Character.isLetter(ch[index])) {
+                while (index < ch.length && Character.isLetter(ch[index]))
+                    sb.append(ch[index++]);
+            } else if (ch[index] == ']') {
+                String str = stringStack[--stringStackIndex];
+                int num = numStack[--numStackIndex];
+                for (int i = 0; i < num; i++)
+                    str = str + sb.toString();
+                sb = new StringBuilder(str);
+                index++;
+            }
+        }
+        // System.out.println(stringStackIndex);
+        // while (stringStackIndex != 0)
+        //     sb.insert(0, stringStack[--stringStackIndex]);
+        return sb.toString();
+    }
+}

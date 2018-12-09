@@ -175,6 +175,8 @@ class Solution {
 }
 
 
+// very concise 1-d version . when reducing 2d space to 1d space, just need to think of the 
+// dependency relation between the terms in the dp formula 
 class Solution {
     public int numDistinct(String s, String t) {
         char[] ch1 = s.toCharArray(), ch2 = t.toCharArray();

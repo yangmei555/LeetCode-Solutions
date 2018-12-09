@@ -1,3 +1,24 @@
+// brainless brute force 
+class Solution {
+    public int maximumSwap(int num) {
+        char[] ch = (num + "").toCharArray();
+        int res = num;
+        for (int i = 0; i < ch.length; i++) {
+            for (int j = i+1; j < ch.length; j++) {
+                char temp = ch[i];
+                ch[i] = ch[j];
+                ch[j] = temp;
+                res = Math.max(res, Integer.valueOf(new String(ch)));
+                temp = ch[i];
+                ch[i] = ch[j];
+                ch[j] = temp;
+            }
+        }
+        return res;
+    }
+}
+
+
 class Solution {
     public int maximumSwap(int num) {
         int[] digit = new int[9];

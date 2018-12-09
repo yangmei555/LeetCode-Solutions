@@ -119,3 +119,44 @@ class Solution {
         return res;
     }
 }
+
+
+class Solution {
+    int[][] dependency = new int[10][10];
+    public int numberOfPatterns(int m, int n) {
+        dependency[1][3] = 2;
+        dependency[4][6] = 5;
+        dependency[7][9] = 8;
+        dependency[1][7] = 4;
+        dependency[2][8] = 5;
+        dependency[3][9] = 6;
+        dependency[1][9] = 5;
+        dependency[3][7] = 5;
+        int res = 0;
+        boolean[] used = new boolean[10];
+        for (int i = m; i <= n; i++) {
+            res += helper(1, i, used) * 4;
+            res += helper(2, i, used) * 4;
+            res += helper(5, i, used);
+        }
+        return res;
+    }
+    
+    public int helper(int start, int len, boolean[] used) {
+        if (len == 0)
+            return 0;
+        if (len == 1)
+            return 1;
+        used[start] = true;
+        int res = 0;
+        for (int i = 1; i < 10; i++) {
+            if (!used[i]) {
+                int dep = dependency[start][i] + dependency[i][start];
+                if (dep == 0 || used[dep]) 
+                    res += helper(i, len-1, used);
+            }
+        }
+        used[start] = false;
+        return res;
+    }
+}
