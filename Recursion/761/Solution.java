@@ -66,3 +66,43 @@ class Solution {
         return S;
     }   
 }
+
+
+class Solution {
+    Map<String, String> memo = new HashMap<>();
+    public String makeLargestSpecial(String S) {
+        if (S.length() <= 2)
+            return S;
+        if (memo.containsKey(S))
+            return memo.get(S);
+        char[] ch = S.toCharArray();
+        int index = 0;
+        List<String> list = new LinkedList<>();
+        while (index < ch.length) {
+            int start = index++, ones = 1;
+            while (index < ch.length && ones != 0) {
+                if (ch[index] == '1')
+                    ones++;
+                else
+                    ones--;
+                index++;
+            }
+            if (start == 0 && index == ch.length) {
+                String res = '1' + makeLargestSpecial(S.substring(1, S.length()-1)) + '0';
+                memo.put(S, res);
+                return res;
+            }
+            list.add(makeLargestSpecial(S.substring(start, index)));
+        }
+        Collections.sort(list, new Comparator<String>() {
+            public int compare(String s1, String s2) {
+                return s2.compareTo(s1);
+            }
+        });
+        StringBuilder sb = new StringBuilder();
+        for (String str : list)
+            sb.append(str);
+        memo.put(S, sb.toString());
+        return sb.toString();
+    }
+}

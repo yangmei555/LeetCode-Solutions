@@ -119,3 +119,33 @@ class Solution {
         return dp[ch2.length];
     }
 }
+
+
+// a concise style of 1 dimension dp 
+class Solution {
+    public boolean isMatch(String s, String p) {
+        char[] ch1 = s.toCharArray(), ch2 = p.toCharArray();
+        boolean[] dp = new boolean[ch2.length+1];
+        dp[0] = true;
+        for (int i = 1; i < ch2.length && ch2[i] == '*'; i += 2)
+            dp[i+1] = true;
+        for (int i = 0; i < ch1.length; i++) {
+            boolean temp1 = dp[0];
+            dp[0] = false;
+            for (int j = 0; j < ch2.length; j++) {
+                boolean temp2 = dp[j+1];
+                if (ch1[i] == ch2[j] || ch2[j] == '.') {
+                    dp[j+1] = temp1;
+                } else if (ch2[j] == '*') {
+                    dp[j+1] = dp[j-1];
+                    if (ch2[j-1] == '.' || ch2[j-1] == ch1[i])
+                        dp[j+1] |= temp2;
+                } else {
+                    dp[j+1] = false;
+                }
+                temp1 = temp2;
+            }
+        }
+        return dp[ch2.length];
+    }
+}
