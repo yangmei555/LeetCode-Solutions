@@ -92,3 +92,31 @@ class Solution {
             return contains(root.left, except, num);
     }
 }
+
+
+// O(n) time O(log(n)) space
+class Solution {
+    public boolean findTarget(TreeNode root, int k) {
+        Stack<TreeNode> left = new Stack<>(), right = new Stack<>();
+        helper(left, root, true);
+        helper(right, root, false);
+        while (left.peek() != right.peek()) {
+            int sum = left.peek().val + right.peek().val;
+            if (sum == k) {
+                return true;
+            } else if (sum < k) {
+                helper(left, left.pop().right, true);
+            } else {
+                helper(right, right.pop().left, false);
+            }
+        }
+        return false;
+    }
+    
+    public void helper(Stack<TreeNode> stack, TreeNode node, boolean flag) {
+        while (node != null) {
+            stack.push(node);
+            node = flag ? node.left : node.right;
+        }
+    }
+}

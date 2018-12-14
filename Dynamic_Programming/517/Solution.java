@@ -37,3 +37,28 @@ class Solution {
         return res;
     }
 }
+
+
+// 4 cases: ->_->, ->_<-, <-_<-, <-_-> , for the flux of each case, 
+// only the lase case is a+b, other cases are Math.max(a, b) 
+class Solution {
+    public int findMinMoves(int[] machines) {
+        int sum = 0;
+        for (int m : machines)
+            sum += m;
+        if (sum % machines.length != 0)
+            return -1;
+        int avg = sum / machines.length;
+        int res = 0, flow = 0;
+        for (int m : machines) {
+            int a = Math.abs(flow);
+            int b = Math.abs(flow + m - avg);
+            if (flow < 0 && flow + m - avg > 0)
+                res = Math.max(res, a + b);
+            else
+                res = Math.max(res, Math.max(a, b));
+            flow += m - avg;
+        }
+        return res;
+    }
+}
