@@ -37,3 +37,20 @@ class Solution {
         return res;
     }
 }
+
+
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        int[] pos = new int[128];
+        char[] ch = s.toCharArray();
+        int res = 0, left = 0;
+        for (int i = 0; i < ch.length; i++) {
+            if (pos[ch[i]]-1 < left) 
+                res = Math.max(res, i-left+1);
+            else 
+                left = pos[ch[i]];
+            pos[ch[i]] = i+1;
+        }
+        return res;
+    }
+}

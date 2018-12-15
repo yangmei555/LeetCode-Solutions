@@ -48,3 +48,31 @@ class Solution {
         return i;
     }
 }
+
+
+class Solution {
+    public int longestConsecutive(int[] nums) {
+        Set<Integer> set = new HashSet<>();
+        for (int n : nums)
+            set.add(n);
+        int res = 0;
+        for (int n : nums) {
+            if (set.contains(n)) {
+                int consec = 1, low = n-1, high = n+1;
+                set.remove(n);
+                while (set.contains(low)) {
+                    consec++;
+                    set.remove(low);
+                    low--;
+                }
+                while (set.contains(high)) {
+                    consec++;
+                    set.remove(high);
+                    high++;
+                }
+                res = Math.max(res, consec);
+            }
+        }
+        return res;
+    }
+}
