@@ -16,6 +16,22 @@ class Solution {
 
 class Solution {
     public int findLHS(int[] nums) {
+        Map<Integer, Integer> map = new HashMap<>();
+        int res = 0;
+        for (int n : nums) {
+            map.put(n, map.getOrDefault(n, 0) + 1);
+            if (map.containsKey(n-1))
+                res = Math.max(res, map.get(n-1) + map.get(n));
+            if (map.containsKey(n+1))
+                res = Math.max(res, map.get(n) + map.get(n+1));
+        }
+        return res;
+    }
+}
+
+
+class Solution {
+    public int findLHS(int[] nums) {
         Arrays.sort(nums);
         int count = 1, consec = 1, n1 = nums[0], n2 = nums[0], res = 0;
         for (int i = 1; i <= nums.length; i++) {

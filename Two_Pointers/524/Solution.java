@@ -86,3 +86,34 @@ class Solution {
         return res;
     }
 }
+
+
+// using the waitFor list, time complexity O(s.length + sum(string.length) where string is in d) 
+class Solution {
+    public String findLongestWord(String s, List<String> d) {
+        List<int[]>[] waitFor = new List[26];
+        for (int i = 0; i < waitFor.length; i++)
+            waitFor[i] = new LinkedList<>();
+        char[][] ch = new char[d.size()][];
+        for (int i = 0; i < ch.length; i++)
+            ch[i] = d.get(i).toCharArray();
+        for (int i = 0; i < ch.length; i++) 
+            waitFor[ch[i][0]-'a'].add(new int[]{i, 0});
+        String str = "";
+        for (char c : s.toCharArray()) {
+            List<int[]> temp = new LinkedList<>(waitFor[c-'a']);
+            waitFor[c-'a'] = new LinkedList<>();
+            for (int[] pair : temp) {
+                pair[1]++;
+                if (pair[1] == ch[pair[0]].length) {
+                    if (pair[1] > str.length() || 
+                        pair[1] == str.length() && str.compareTo(d.get(pair[0])) > 0)
+                        str = d.get(pair[0]);
+                } else {
+                    waitFor[ch[pair[0]][pair[1]]-'a'].add(pair);
+                }
+            }
+        }
+        return str;
+    }
+}

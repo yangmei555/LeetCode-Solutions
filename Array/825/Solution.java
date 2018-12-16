@@ -35,6 +35,36 @@ class Solution {
 }
 
 
+// similar idea with above but more concise 
+class Solution {
+    public int numFriendRequests(int[] ages) {
+        Arrays.sort(ages);
+        int res = 0, same = 0;
+        for (int i = 0; i < ages.length; i++) {
+            int index = helper(ages, 0, i, ages[i]/2+7);
+            res += i - index;
+            if (i != 0 && ages[i-1] == ages[i] && ages[i] > 14)
+                same++;
+            else
+                same = 0;
+            res += same;
+        }
+        return res;
+    }
+    
+    public int helper(int[] ages, int left, int right, int val) {
+        while (left < right) {
+            int mid = (left + right) / 2;
+            if (ages[mid] <= val)
+                left = mid + 1;
+            else
+                right = mid;
+        }
+        return left;
+    }
+}
+
+
 class Solution {
     public int numFriendRequests(int[] ages) {
         int[] count = new int[121];

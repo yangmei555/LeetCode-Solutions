@@ -21,3 +21,18 @@ class Solution {
         return index;
     }
 }
+
+
+class Solution {
+    public int removeDuplicates(int[] nums) {
+        int index = 0, i = 0;
+        while (i < nums.length) {
+            int start = i++;
+            while (i < nums.length && nums[start] == nums[i])
+                i++;
+            for (int j = start; j < i && j < start + 2; j++)
+                nums[index++] = nums[j];
+        }
+        return index;
+    }
+}

@@ -98,3 +98,84 @@ class Solution {
         }
     }
 }
+
+
+// using binary search + bit traversal to get the correct index, so O(N * logN * logN)
+class Solution {
+    public int[][] reconstructQueue(int[][] people) {
+        Arrays.sort(people, new Comparator<int[]>() {
+            public int compare(int[] i1, int[] i2) {
+                if (i1[0] != i2[0])
+                    return i1[0] - i2[0];
+                else
+                    return i2[1] - i1[1];
+            }
+        });
+        int[] bit = new int[people.length+1];
+        int[][] res = new int[people.length][];
+        for (int[] p : people) {
+            int order = p[1];
+            int index = helper(bit, order);
+            res[index] = p;
+            for (int i = index+1; i < bit.length; i += i&-i)
+                bit[i]++;
+        }
+        // System.out.println(Arrays.toString(bit));
+        return res;
+    }
+    
+    // O(logN * logN)
+    public int helper(int[] bit, int order) {
+        int left = 1, right = bit.length-1;
+        while (left < right) {
+            int mid = (left + right) / 2;
+            int sum = 0;
+            for (int i = mid; i > 0; i &= i-1) 
+                sum += bit[i];
+            if (mid - sum <= order)
+                left = mid + 1;
+            else
+                right = mid;
+        }
+        return left - 1;
+    }
+}
+
+
+// using binary indexed tree, indeed O(N * logN) 
+class Solution {
+    public int[][] reconstructQueue(int[][] people) {
+        Arrays.sort(people, new Comparator<int[]>() {
+            public int compare(int[] i1, int[] i2) {
+                if (i1[0] != i2[0])
+                    return i1[0] - i2[0];
+                else
+                    return i2[1] - i1[1];
+            }
+        });
+        int[] bit = new int[people.length+1];
+        int[][] res = new int[people.length][];
+        for (int[] p : people) {
+            int order = p[1];
+            int index = helper(bit, order);
+            res[index] = p;
+            for (int i = index+1; i < bit.length; i += i&-i)
+                bit[i]++;
+        }
+        // System.out.println(Arrays.toString(bit));
+        return res;
+    }
+    
+    // log(N), actually constant time 
+    public int helper(int[] bit, int order) {
+        int res = 0, sum = 0;
+        for (int i = 30; i >= 0; i--) {
+            res += 1 << i;
+            if (res >= bit.length || res - (sum + bit[res]) > order)
+                res -= 1 << i;
+            else
+                sum += bit[res];
+        }
+        return res;
+    }
+}
