@@ -82,3 +82,31 @@ class Solution {
         return res;
     }
 }
+
+
+// find longest path in a DAG ... 
+class Solution {
+    public int maxEnvelopes(int[][] envelopes) {
+        int[] dist = new int[envelopes.length];
+        for (int i = 0; i < envelopes.length; i++) {
+            if (dist[i] == 0)
+                helper(envelopes, i, dist);
+        }
+        int res = 0;
+        for (int d : dist)
+            res = Math.max(res, d);
+        return res;
+    }
+    
+    public int helper(int[][] envelopes, int node, int[] dist) {
+        if (dist[node] != 0)
+            return dist[node];
+        int res = 1;
+        for (int i = 0; i < envelopes.length; i++) {
+            if (envelopes[node][0] < envelopes[i][0] && envelopes[node][1] < envelopes[i][1])
+                res = Math.max(res, helper(envelopes, i, dist) + 1);
+        }
+        dist[node] = res;
+        return res;
+    }
+}

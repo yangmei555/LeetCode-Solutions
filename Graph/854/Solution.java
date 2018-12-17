@@ -152,6 +152,7 @@ class Solution {
         Set<String> visited = new HashSet<>();
         int res = 0;
         queue.offer(A);
+        visited.add(A);
         char[] ch2 = B.toCharArray();
         while (!queue.isEmpty()) {
             for (int i = queue.size(); i > 0; i--) {

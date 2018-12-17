@@ -32,3 +32,23 @@ class Solution {
         return res;
     }
 }
+
+
+class Solution {
+    public double new21Game(int N, int K, int W) {
+        double[] dp = new double[N+1];
+        dp[0] = 1;
+        double res = 0, cum = 0;
+        for (int i = 0; i <= N; i++) {
+            if (i != 0)
+                dp[i] = cum / W;
+            if (i < K)
+                cum += dp[i];
+            if (i >= W)
+                cum -= dp[i-W];
+            if (i >= K)
+                res += dp[i];
+        }
+        return res;
+    }
+} 

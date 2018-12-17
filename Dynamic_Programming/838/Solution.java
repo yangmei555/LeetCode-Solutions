@@ -59,3 +59,42 @@ class Solution {
         return String.valueOf(ch);
     }
 }
+
+
+// a verbose solution 
+class Solution {
+    public String pushDominoes(String dominoes) {
+        char[] ch = dominoes.toCharArray();
+        int index = -1;
+        while (index < ch.length) {
+            int start = index++;
+            while (index < ch.length && ch[index] == '.')
+                index++;
+            if (start == -1) {
+                if (index < ch.length && ch[index] == 'L') {
+                    for (int i = 0; i < index; i++)
+                        ch[i] = 'L';
+                }
+            } else if (index == ch.length) {
+                if (ch[start] == 'R') {
+                    for (int i = start + 1; i < ch.length; i++)
+                        ch[i] = 'R';
+                }
+            } else {
+                if (ch[start] == 'L' && ch[index] == 'L') {
+                    for (int i = start + 1; i < index; i++)
+                        ch[i] = 'L';
+                } else if (ch[start] == 'R' && ch[index] == 'R') {
+                    for (int i = start + 1; i < index; i++)
+                        ch[i] = 'R';
+                } else if (ch[start] == 'R' && ch[index] == 'L') {
+                    for (int i = start + 1, j = index - 1; i < j; i++, j--) {
+                        ch[i] = 'R';
+                        ch[j] = 'L';
+                    }
+                }
+            }
+        }
+        return new String(ch);
+    }
+}

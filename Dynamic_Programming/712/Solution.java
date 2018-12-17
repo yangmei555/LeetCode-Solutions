@@ -29,7 +29,7 @@ class Solution {
         char[] ch1 = s1.toCharArray(), ch2 = s2.toCharArray();
         int temp1 = 0, temp2 = 0;
         for (int i = 0; i < s1.length(); i++) {
-            temp1 = dp[i];
+            temp1 = dp[0];
             for (int j = 0; j < s2.length(); j++) {
                 temp2 = dp[j+1];
                 if (ch1[i] == ch2[j]) {
