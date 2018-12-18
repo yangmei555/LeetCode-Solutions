@@ -12,35 +12,6 @@ class Solution {
         List<Integer> list = new LinkedList<>();
         if (root == null)
             return list;
-        TreeNode cur = root, pre = null;
-        while (cur != null) {
-            if (cur.left != null) {
-                pre = cur.left;
-                while (pre.right != null && pre.right != cur)
-                    pre = pre.right;
-                if (pre.right == null) {
-                    pre.right = cur;
-                    cur = cur.left;
-                } else {
-                    pre.right = null;
-                    list.add(cur.val);
-                    cur = cur.right;
-                }
-            } else {
-                list.add(cur.val);
-                cur = cur.right;
-            }
-        }
-        return list;
-    }
-}
-
-
-class Solution {
-    public List<Integer> inorderTraversal(TreeNode root) {
-        List<Integer> list = new LinkedList<>();
-        if (root == null)
-            return list;
         Stack<TreeNode> stack = new Stack<>();
         TreeNode cur = root;
         while (cur != null || !stack.isEmpty()) {
@@ -82,5 +53,35 @@ class Solution {
             }
         }
         return res;
+    }
+}
+
+
+// Morris traversal 
+class Solution {
+    public List<Integer> inorderTraversal(TreeNode root) {
+        List<Integer> list = new LinkedList<>();
+        if (root == null)
+            return list;
+        TreeNode cur = root, pre = null;
+        while (cur != null) {
+            if (cur.left != null) {
+                pre = cur.left;
+                while (pre.right != null && pre.right != cur)
+                    pre = pre.right;
+                if (pre.right == null) {
+                    pre.right = cur;
+                    cur = cur.left;
+                } else {
+                    pre.right = null;
+                    list.add(cur.val);
+                    cur = cur.right;
+                }
+            } else {
+                list.add(cur.val);
+                cur = cur.right;
+            }
+        }
+        return list;
     }
 }

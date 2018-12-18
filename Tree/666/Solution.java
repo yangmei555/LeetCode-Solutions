@@ -23,3 +23,23 @@ class Solution {
         return res;
     }
 }
+
+
+class Solution {
+    public int pathSum(int[] nums) {
+        int[] count = new int[16], val = new int[16];
+        for (int i = nums.length-1; i >= 0; i--) {
+            int depth = nums[i] / 100, order = nums[i] / 10 % 10, v = nums[i] % 10;
+            int index = (1 << (depth-1)) - 1 + order - 1;
+            val[index] = v;
+            count[index] = (index*2+1 >= 16 ? 0 : count[index*2+1]) + 
+                            (index*2+2 >= 16 ? 0 : count[index*2+2]);
+            if (count[index] == 0)
+                count[index]++;
+        }
+        int res = 0;
+        for (int i = 0; i < count.length; i++)
+            res += count[i] * val[i];
+        return res;
+    }
+}

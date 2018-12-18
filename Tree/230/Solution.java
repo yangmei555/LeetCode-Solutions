@@ -25,3 +25,35 @@ class Solution {
         return helper(root.right, k);
     }
 }
+
+
+// Morris traversal 
+class Solution {
+    public int kthSmallest(TreeNode root, int k) {
+        int order = 0;
+        TreeNode cur = root;
+        while (cur != null) {
+            if (cur.left == null) {
+                order++;
+                if (order == k)
+                    return cur.val;
+                cur = cur.right;
+            } else {
+                TreeNode temp = cur.left;
+                while (temp.right != null && temp.right != cur)
+                    temp = temp.right;
+                if (temp.right == null) {
+                    temp.right = cur;
+                    cur = cur.left;
+                } else {
+                    temp.right = null;
+                    order++;
+                    if (order == k)
+                        return cur.val;
+                    cur = cur.right;
+                }
+            }
+        }
+        return -1;
+    }
+}

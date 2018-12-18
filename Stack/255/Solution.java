@@ -1,3 +1,26 @@
+// a verbose version 
+class Solution {
+    public boolean verifyPreorder(int[] preorder) {
+        if (preorder.length == 0)
+            return true;
+        Stack<Integer> stack = new Stack<>();
+        int pre = Integer.MIN_VALUE, index = 0;
+        stack.push(preorder[index++]);
+        while (index < preorder.length) {
+            if (stack.peek() > preorder[index]) {
+                if (preorder[index] < pre)
+                    return false;
+            } else {
+                while (!stack.isEmpty() && stack.peek() < preorder[index])
+                    pre = stack.pop();
+            }
+            stack.push(preorder[index++]);
+        }
+        return true;
+    }
+}
+
+
 class Solution {
     public boolean verifyPreorder(int[] preorder) {
         int[] stack = new int[preorder.length];
