@@ -34,3 +34,48 @@ class Solution {
         return list;
     }
 }
+
+
+class Solution {
+    public List<Integer> findAnagrams(String s, String p) {
+        char[] ch1 = s.toCharArray(), ch2 = p.toCharArray();
+        int[] count = new int[26];
+        List<Integer> res = new LinkedList<>();
+        for (char c : ch2)
+            count[c-'a']++;
+        int left = 0, right = 0, match = 0;
+        while (right < ch1.length) {
+            if (count[ch1[right++]-'a']-- > 0)
+                match++;
+            while (match == ch2.length) {
+                if (right - left == ch2.length)
+                    res.add(left);
+                if (count[ch1[left++]-'a']++ == 0)
+                    match--;
+            }
+        }
+        return res;
+    }
+}
+
+
+// most concise version 
+class Solution {
+    public List<Integer> findAnagrams(String s, String p) {
+        char[] ch1 = s.toCharArray(), ch2 = p.toCharArray();
+        int[] count = new int[26];
+        List<Integer> res = new LinkedList<>();
+        for (char c : ch2)
+            count[c-'a']++;
+        int left = 0, right = 0;
+        while (right < ch1.length) {
+            count[ch1[right]-'a']--;
+            while (count[ch1[right]-'a'] < 0) 
+                count[ch1[left++]-'a']++;
+            if (right - left + 1 == ch2.length)
+                res.add(left);
+            right++;
+        }
+        return res;
+    }
+}

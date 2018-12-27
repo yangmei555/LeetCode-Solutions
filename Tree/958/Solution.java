@@ -34,3 +34,25 @@ class Solution {
         return true;
     }
 }
+
+
+// more concise version 
+class Solution {
+    public boolean isCompleteTree(TreeNode root) {
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        boolean meetsNull = false;
+        while (!queue.isEmpty()) {
+            TreeNode node = queue.poll();
+            if (node != null) {
+                if (meetsNull)
+                    return false;
+                queue.offer(node.left);
+                queue.offer(node.right);
+            } else {
+                meetsNull = true;
+            }
+        }
+        return true;
+    }
+}

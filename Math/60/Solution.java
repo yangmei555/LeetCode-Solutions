@@ -108,3 +108,40 @@ class Solution {
         return sb.toString();
     }
 }
+
+
+// use binary indexed tree to achieve O(log n) (can be viewed as constant time) removal 
+class Solution {
+    public String getPermutation(int n, int k) {
+        int[] bit = new int[n+1];
+        int fac = 1;
+        for (int i = 1; i < n; i++)
+            fac *= i;
+        k--;
+        StringBuilder sb = new StringBuilder();
+        for (int i = n-1; i >= 0; i--) {
+            int digit = k / fac;
+            int pos = helper(bit, digit);
+            sb.append(pos);
+            k %= fac;
+            if (i != 0)
+                fac /= i;
+            for (int j = pos; j < bit.length; j += j&-j)
+                bit[j]++;
+        }
+        return sb.toString();
+    }
+    
+    // find the last position where (total elements - used elements <= digit) 
+    public int helper(int[] bit, int digit) {
+        int res = 0, sum = 0;
+        for (int i = 30; i >= 0; i--) {
+            res += 1 << i;
+            if (res >= bit.length || res - (sum + bit[res]) > digit)
+                res -= 1 << i;
+            else
+                sum += bit[res];
+        }
+        return res + 1;
+    }
+}

@@ -86,3 +86,23 @@ class Solution {
         return false;
     }
 }
+
+
+class Solution {
+    public boolean checkInclusion(String s1, String s2) {
+        char[] ch1 = s1.toCharArray(), ch2 = s2.toCharArray();
+        int[] count = new int[26];
+        for (char c : ch1)
+            count[c-'a']++;
+        int left = 0, right = 0;
+        while (right < ch2.length) {
+            count[ch2[right]-'a']--;
+            while (count[ch2[right]-'a'] < 0) 
+                count[ch2[left++]-'a']++;
+            if (right - left + 1 == ch1.length)
+                return true;
+            right++;
+        }
+        return false;
+    }
+}

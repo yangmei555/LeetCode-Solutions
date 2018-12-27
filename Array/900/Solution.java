@@ -50,3 +50,29 @@ class RLEIterator {
         }
     }
 }
+
+
+// another style 
+class RLEIterator {
+
+    int[] A;
+    int index, used;
+    public RLEIterator(int[] A) {
+        this.A = A;
+        index = used = 0;
+    }
+    
+    public int next(int n) {
+        while (index < A.length) {
+            if (used + n <= A[index]) {
+                used += n;
+                return A[index+1];
+            } else {
+                n -= A[index] - used;
+                used = 0;
+                index += 2;
+            }
+        }
+        return -1;
+    }
+}

@@ -167,6 +167,7 @@ class Solution {
     }
     
     // log(N), actually constant time 
+    // find the last position where (total indices - used indices <= order) 
     public int helper(int[] bit, int order) {
         int res = 0, sum = 0;
         for (int i = 30; i >= 0; i--) {
