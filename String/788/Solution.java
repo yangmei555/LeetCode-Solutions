@@ -62,3 +62,88 @@ class Solution {
         return has;
     }
 }
+
+
+// O(logN) method, similar to Problem 902 
+class Solution {
+    public int rotatedDigits(int N) {
+        boolean[] valid = new boolean[10];
+        valid[0] = valid[1] = valid[8] = true;
+        int ret1 = helper(N, valid);
+        valid[2] = valid[5] = valid[6] = valid[9] = true;
+        int ret2 = helper(N, valid);
+        return ret2 - ret1;
+    }
+    
+    // find how many numbers in [0, N] only consist of valid digits 
+    public int helper(int N, boolean[] valid) {
+        int count = 0;
+        for (boolean b : valid) {
+            if (b)
+                count++;
+        }
+        char[] ch = String.valueOf(N).toCharArray();
+        int[] dp = new int[ch.length+1];
+        dp[ch.length] = 1;
+        int cur = 1;
+        for (int i = ch.length-1; i >= 0; i--) {
+            for (int j = 0; j < valid.length; j++) {
+                if (valid[j]) {
+                    if (j < ch[i]-'0') 
+                        dp[i] += cur;
+                    else if (j == ch[i]-'0') 
+                        dp[i] += dp[i+1];
+                    else 
+                        break;
+                }
+            }
+            cur *= count;
+        }
+        return dp[0];
+    }
+}
+
+
+// another O(logN) method, similar to Problem 902 
+class Solution {
+    public int rotatedDigits(int N) {
+        boolean[] valid = new boolean[10];
+        valid[0] = valid[1] = valid[8] = true;
+        int ret1 = helper(N, valid);
+        valid[2] = valid[5] = valid[6] = valid[9] = true;
+        int ret2 = helper(N, valid);
+        return ret2 - ret1;
+    }
+    
+    // find how many numbers in [0, N] only consist of valid digits 
+    public int helper(int N, boolean[] valid) {
+        int count = 0;
+        for (boolean b : valid) {
+            if (b)
+                count++;
+        }
+        char[] ch = String.valueOf(N).toCharArray();
+        int cur = 1, res = 0;
+        for (int i = 1; i < ch.length; i++)
+            cur *= count;
+        for (int i = 0; i < ch.length; i++) {
+            boolean end = true;
+            for (int j = 0; j < valid.length; j++) {
+                if (valid[j]) {
+                    if (j < ch[i]-'0') {
+                        res += cur;
+                    } else if (j == ch[i]-'0') {
+                        end = false;
+                        break;
+                    } else {
+                        break;
+                    }
+                }
+            }
+            if (end)
+                return res;
+            cur /= count;
+        }
+        return res + 1;
+    }
+}

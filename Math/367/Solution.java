@@ -14,3 +14,23 @@ class Solution {
         return num == a*a || num == b*b;
     }
 }
+
+
+class Solution {
+    public boolean isPerfectSquare(int num) {
+        if (num < 0)
+            return false;
+        int left = 1, right = num;
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+            if (mid > num / mid)
+                right = mid;
+            else
+                left = mid + 1;
+        }
+        if (left > num / left)
+            return (left-1) * (left-1) == num;
+        else
+            return left * left == num;
+    }
+}

@@ -132,7 +132,8 @@ class Solution {
         return sb.toString();
     }
     
-    // find the last position where (total elements - used elements <= digit) 
+    // find the last position where (total elements - used elements <= digit), 
+    // then return the next position of it 
     public int helper(int[] bit, int digit) {
         int res = 0, sum = 0;
         for (int i = 30; i >= 0; i--) {

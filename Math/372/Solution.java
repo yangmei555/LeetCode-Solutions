@@ -21,3 +21,26 @@ class Solution {
         }
     }
 }
+
+
+class Solution {
+    public int superPow(int a, int[] b) {
+        int mod = 1337, res = 1;
+        a %= mod;
+        for (int i = 0; i < b.length; i++) {
+            res = (helper(res, 10, mod) * helper(a, b[i], mod)) % mod;
+        }
+        return res;
+    }
+    
+    public int helper(int a, int n, int mod) {
+        if (n == 0)
+            return 1;
+        int ret = helper(a, n/2, mod);
+        int res = ret * ret % mod;
+        if (n % 2 == 0)
+            return res;
+        else
+            return res * a % mod;
+    }
+}

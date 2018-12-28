@@ -16,3 +16,18 @@ class Solution {
         }
     }
 }
+
+
+class Solution {
+    public double myPow(double x, int n) {
+        if (n == 0)
+            return 1;
+        double ret = myPow(x, n/2);
+        if (n % 2 == 0)
+            return ret * ret;
+        else if (n > 0)
+            return x * ret * ret;
+        else
+            return ret * ret / x;
+    }
+}
