@@ -3,7 +3,6 @@ class Solution {
         Map<Integer, Integer>[] maps = new Map[A.length];
         for (int i = 0; i < maps.length; i++)
             maps[i] = new HashMap<>();
-        Map<Integer, Integer> count = new HashMap<>();
         int res = 0;
         for (int i = 0; i < A.length; i++) {
             for (int j = 0; j < i; j++) {

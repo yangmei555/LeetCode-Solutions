@@ -23,6 +23,29 @@ class Solution {
 
 class Solution {
     public int lenLongestFibSubseq(int[] A) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < A.length; i++)
+            map.put(A[i], i);
+        int[][] dp = new int[A.length][A.length];
+        int res = 0;
+        for (int i = 0; i < A.length; i++) {
+            for (int j = i+1; j < A.length; j++) {
+                if (A[j] - A[i] < A[i] && map.containsKey(A[j] - A[i])) {
+                    int k = map.get(A[j] - A[i]);
+                    dp[i][j] = dp[k][i] + 1;
+                } else {
+                    dp[i][j] = 2;
+                }
+                res = Math.max(res, dp[i][j]);
+            }
+        }
+        return res < 3 ? 0 : res;
+    }
+}
+
+
+class Solution {
+    public int lenLongestFibSubseq(int[] A) {
         Map<Integer, Integer> pos = new HashMap<>();
         for (int i = 0; i < A.length; i++)
             pos.put(A[i], i);

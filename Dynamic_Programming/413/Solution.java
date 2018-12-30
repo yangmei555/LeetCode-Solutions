@@ -64,3 +64,18 @@ class Solution {
         return res;
     }
 }
+
+
+class Solution {
+    public int numberOfArithmeticSlices(int[] A) {
+        int res = 0, count = 2;
+        for (int i = 2; i < A.length; i++) {
+            if (A[i-2] + A[i] == A[i-1] * 2)
+                count++;
+            else
+                count = 2;
+            res += count - 2;
+        }
+        return res;
+    }
+}

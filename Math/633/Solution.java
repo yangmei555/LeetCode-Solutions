@@ -15,6 +15,7 @@ class Solution {
 }
 
 
+// binary search 
 class Solution {
     public boolean judgeSquareSum(int c) {
         for (int i = 0; i * i <= c / 2; i++) {
@@ -31,5 +32,26 @@ class Solution {
                 return true;
         }
         return false;
+    }
+}
+
+
+// Fermat's theorem! n can be represented as two squares if and only if in the prime factorization 
+// of n every prime p where p % 4 == 3 occurs an even number of times 
+class Solution {
+    public boolean judgeSquareSum(int c) {
+        int i;
+        for (i = 2; (long)i * i <= c; i++) {
+            if (c % i == 0) {
+                int count = 0;
+                while (c % i == 0) {
+                    count++;
+                    c /= i;
+                }
+                if (i % 4 == 3 && count % 2 == 1)
+                    return false;
+            }
+        }
+        return c % 4 != 3;
     }
 }
