@@ -35,3 +35,29 @@ class Solution {
         return newhead;
     }
 }
+
+
+class Solution {
+    public ListNode rotateRight(ListNode head, int k) {
+        if (head == null)
+            return null;
+        ListNode slow = head, fast = head;
+        int len = 0;
+        while (k-- > 0) {
+            fast = fast.next;
+            len++;
+            if (fast == null) {
+                fast = head;
+                k %= len;
+            }
+        }
+        while (fast.next != null) {
+            fast = fast.next;
+            slow = slow.next;
+        }
+        fast.next = head;
+        ListNode res = slow.next;
+        slow.next = null;
+        return res;
+    }
+}

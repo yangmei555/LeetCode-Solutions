@@ -29,3 +29,22 @@ class Solution {
         return res;
     }
 }
+
+
+class Solution {
+    public List<Interval> insert(List<Interval> intervals, Interval newInterval) {
+        for (int i = intervals.size()-1; i >= 0; i--) {
+            Interval in = intervals.get(i);
+            if (in.start <= newInterval.end && newInterval.start <= in.end) {
+                newInterval.start = Math.min(newInterval.start, in.start);
+                newInterval.end = Math.max(newInterval.end, in.end);
+                intervals.remove(i);
+            } else if (in.end < newInterval.start) {
+                intervals.add(i+1, newInterval);
+                return intervals;
+            }
+        }
+        intervals.add(0, newInterval);
+        return intervals;
+    }
+}

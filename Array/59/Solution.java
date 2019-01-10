@@ -22,3 +22,31 @@ class Solution {
         return matrix;
     }
 }
+
+
+class Solution {
+    public int[][] generateMatrix(int n) {
+        int[][] res = new int[n][n];
+        int num = 1;
+        int rowStart = 0, rowEnd = n-1, colStart = 0, colEnd = n-1;
+        while (rowStart <= rowEnd && colStart <= colEnd) {
+            for (int j = colStart; j <= colEnd; j++)
+                res[rowStart][j] = num++;
+            rowStart++;
+            for (int i = rowStart; i <= rowEnd; i++)
+                res[i][colEnd] = num++;
+            colEnd--;
+            if (rowStart <= rowEnd) {
+                for (int j = colEnd; j >= colStart; j--)
+                    res[rowEnd][j] = num++;
+            }
+            rowEnd--;
+            if (colStart <= colEnd) {
+                for (int i = rowEnd; i >= rowStart; i--)
+                    res[i][colStart] = num++;
+            }
+            colStart++;
+        }
+        return res;
+    }
+}

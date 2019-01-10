@@ -62,3 +62,38 @@ class Solution {
         return sign ? res : -res;
     }
 }
+
+
+class Solution {
+    public int divide(int dividend, int divisor) {
+        int res = 0;
+        if (divisor == Integer.MIN_VALUE)
+            return dividend == Integer.MIN_VALUE ? 1 : 0;
+        if (dividend == Integer.MIN_VALUE) {
+            if (divisor == -1)
+                return Integer.MAX_VALUE;
+            res = 1;
+            if (divisor > 0)
+                dividend += divisor;
+            else
+                dividend -= divisor;
+        }
+        int sign = dividend > 0 && divisor > 0 || dividend < 0 && divisor < 0 ? 1 : -1;
+        if (dividend < 0)
+            dividend = -dividend;
+        if (divisor < 0)
+            divisor = -divisor;
+        while (dividend >= divisor) {
+            int i = 1, n = divisor;
+            while (n <= dividend && n > 0) {
+                i <<= 1;
+                n <<= 1;
+            }
+            n >>>= 1;
+            i >>>= 1;
+            dividend -= n;
+            res += i;
+        }
+        return sign == 1 ? res : -res;
+    }
+}
