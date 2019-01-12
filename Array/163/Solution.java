@@ -58,3 +58,23 @@ class Solution {
         return res;
     }
 }
+
+
+// extremely error prone ... 
+class Solution {
+    public List<String> findMissingRanges(int[] nums, int lower, int upper) {
+        long pre = nums.length == 0 ? lower : lower - 1L;
+        List<String> res = new LinkedList<>();
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] != pre && nums[i] != pre + 1)
+                res.add(pre + 1 == nums[i] - 1 ? pre + 1 + "" : pre + 1 + "->" + (nums[i] - 1));
+            pre = nums[i];
+        }
+        if (upper != pre || nums.length == 0) {
+            if (nums.length == 0)
+                pre--;
+            res.add(pre + 1 == upper ? pre + 1 + "" : pre + 1 + "->" + upper);
+        }
+        return res;
+    }
+}
