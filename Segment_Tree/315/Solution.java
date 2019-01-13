@@ -57,6 +57,27 @@ class Solution {
 }
 
 
+// brainless tree set solution, pretty slow 
+class Solution {
+    public List<Integer> countSmaller(int[] nums) {
+        List<Integer> res = new LinkedList<>();
+        TreeSet<int[]> set = new TreeSet<>(new Comparator<int[]>() {
+            public int compare(int[] i1, int[] i2) {
+                if (i1[0] == i2[0])
+                    return i1[1] - i2[1];
+                else
+                    return i1[0] - i2[0];
+            }    
+        });
+        for (int i = nums.length-1; i >= 0; i--) {
+            res.add(0, set.headSet(new int[]{nums[i], i}).size());
+            set.add(new int[]{nums[i], i});
+        }
+        return res;
+    }
+}
+
+
 // binary indexed tree , use the tree as a hashmap. this is the fastest solution 
 class Solution {
     public List<Integer> countSmaller(int[] nums) {
