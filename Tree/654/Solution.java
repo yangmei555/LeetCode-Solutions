@@ -57,3 +57,25 @@ class Solution {
         return root;
     }
 }
+
+
+// another way of using stack 
+class Solution {
+    public TreeNode constructMaximumBinaryTree(int[] nums) {
+        TreeNode[] stack = new TreeNode[nums.length];
+        int index = 0;
+        for (int i = 0; i < nums.length; i++) {
+            TreeNode node = new TreeNode(nums[i]);
+            while (index > 0 && stack[index-1].val < nums[i]) {
+                stack[index-1].right = node.left;
+                node.left = stack[--index];
+            } 
+            stack[index++] = node;
+        }
+        while (index > 1) {
+            stack[index-2].right = stack[index-1];
+            index--;
+        }
+        return stack[0];
+    }
+}
